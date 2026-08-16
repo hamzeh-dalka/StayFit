@@ -80,6 +80,8 @@ namespace StayFit.Controllers
                 .Select(cc => new CoachClientDto
                 {
                     Id = cc.Id,
+                    ClientProfileId = cc.ClientProfileId,
+                    UserId = cc.ClientProfile.UserId,
                     Name = cc.ClientProfile.User.Name,
                     Status = cc.Status,
                     RequestedAt = cc.RequestedAt
@@ -110,6 +112,7 @@ namespace StayFit.Controllers
                 .Select(cc => new CoachClientDto
                 {
                     Id = cc.Id,
+                    UserId = cc.CoachProfile.UserId,
                     Name = cc.CoachProfile.User.Name,
                     Status = cc.Status,
                     RequestedAt = cc.RequestedAt

@@ -44,6 +44,33 @@ namespace StayFit.Controllers
             return Ok(coaches);
         }
 
+        [Authorize(Roles = "Coach")]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMyCoachProfile(CancellationToken ct)
+        {
+            var userId = GetCurrentUserId();
+
+            var coach = await DbContext.CoachProfiles
+                .Include(c => c.User)
+                .Where(c => c.UserId == userId)
+                .Select(c => new CoachProfileDto
+                {
+                    Id = c.Id,
+                    Name = c.User.Name,
+                    Specialty = c.Specialty,
+                    Bio = c.Bio,
+                    ExperienceYears = c.ExperienceYears
+                })
+                .FirstOrDefaultAsync(ct);
+
+            if (coach == null)
+            {
+                return NotFound("Coach profile not found.");
+            }
+
+            return Ok(coach);
+        }
+
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCoachProfile(long id, CancellationToken ct)

@@ -58,6 +58,33 @@ namespace StayFit.Controllers
         }
 
         [Authorize(Roles = "Client")]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMyClientProfile(CancellationToken ct)
+        {
+            var userId = GetCurrentUserId();
+
+            var client = await DbContext.ClientProfiles
+                .Include(c => c.User)
+                .Where(c => c.UserId == userId)
+                .Select(c => new ClientProfileDto
+                {
+                    Id = c.Id,
+                    Name = c.User.Name,
+                    HeightCm = c.HeightCm,
+                    DateOfBirth = c.DateOfBirth,
+                    Gender = c.Gender
+                })
+                .FirstOrDefaultAsync(ct);
+
+            if (client == null)
+            {
+                return NotFound("Client profile not found.");
+            }
+
+            return Ok(client);
+        }
+
+        [Authorize(Roles = "Client")]
         [HttpPut("me")]
         public async Task<IActionResult> UpdateMyClientProfile([FromBody] SaveClientProfileDto dto, CancellationToken ct)
         {
