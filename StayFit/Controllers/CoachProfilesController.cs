@@ -8,20 +8,17 @@ namespace StayFit.Controllers
 {
     [Route("api/coach-profiles")]
     [ApiController]
-    public class CoachProfilesController : ControllerBase
+    public class CoachProfilesController : BaseApiController
     {
-        private readonly StayFitDbContext _dbContext;
-
-        public CoachProfilesController(StayFitDbContext dbContext)
+        public CoachProfilesController(StayFitDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllCoachProfiles([FromQuery] FilterCoachProfiles filter, CancellationToken ct)
         {
-            var query = _dbContext.CoachProfiles
+            var query = DbContext.CoachProfiles
                 .Include(c => c.User)
                 .AsQueryable();
 
@@ -51,7 +48,7 @@ namespace StayFit.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCoachProfile(long id, CancellationToken ct)
         {
-            var coach = await _dbContext.CoachProfiles
+            var coach = await DbContext.CoachProfiles
                 .Include(c => c.User)
                 .Where(c => c.Id == id)
                 .Select(c => new CoachProfileDto
@@ -78,7 +75,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var coach = await _dbContext.CoachProfiles
+            var coach = await DbContext.CoachProfiles
                 .FirstOrDefaultAsync(c => c.UserId == userId, ct);
 
             if (coach == null)
@@ -90,7 +87,7 @@ namespace StayFit.Controllers
             coach.Bio = dto.Bio;
             coach.ExperienceYears = dto.ExperienceYears;
 
-            await _dbContext.SaveChangesAsync(ct);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok(new CoachProfileDto
             {
@@ -100,16 +97,6 @@ namespace StayFit.Controllers
                 Bio = coach.Bio,
                 ExperienceYears = coach.ExperienceYears
             });
-        }
-
-        private long GetCurrentUserId()
-        {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new UnauthorizedAccessException();
-            }
-            return long.Parse(id);
         }
     }
 }

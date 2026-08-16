@@ -3,20 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StayFit.DTOs.CoachClient;
 using StayFit.Enums;
-using System.Security.Claims;
 
 namespace StayFit.Controllers
 {
     [Authorize]
     [Route("api/coach-client")]
     [ApiController]
-    public class CoachClientController : ControllerBase
+    public class CoachClientController : BaseApiController
     {
-        private readonly StayFitDbContext _dbContext;
-
-        public CoachClientController(StayFitDbContext dbContext)
+        public CoachClientController(StayFitDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
         [Authorize(Roles = "Client")]
@@ -25,7 +21,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var clientProfile = await _dbContext.ClientProfiles
+            var clientProfile = await DbContext.ClientProfiles
                 .FirstOrDefaultAsync(c => c.UserId == userId, ct);
 
             if (clientProfile == null)
@@ -33,13 +29,13 @@ namespace StayFit.Controllers
                 return NotFound("Client profile not found.");
             }
 
-            var coachExists = await _dbContext.CoachProfiles.AnyAsync(c => c.Id == coachId, ct);
+            var coachExists = await DbContext.CoachProfiles.AnyAsync(c => c.Id == coachId, ct);
             if (!coachExists)
             {
                 return NotFound("Coach not found.");
             }
 
-            var alreadyExists = await _dbContext.CoachClients.AnyAsync(cc =>
+            var alreadyExists = await DbContext.CoachClients.AnyAsync(cc =>
                 cc.CoachProfileId == coachId &&
                 cc.ClientProfileId == clientProfile.Id &&
                 cc.Status != CoachClientStatus.Rejected, ct);
@@ -57,8 +53,8 @@ namespace StayFit.Controllers
                 RequestedAt = DateTime.UtcNow
             };
 
-            _dbContext.CoachClients.Add(coachClient);
-            await _dbContext.SaveChangesAsync(ct);
+            DbContext.CoachClients.Add(coachClient);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok();
         }
@@ -69,7 +65,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var coachProfile = await _dbContext.CoachProfiles
+            var coachProfile = await DbContext.CoachProfiles
                 .FirstOrDefaultAsync(c => c.UserId == userId, ct);
 
             if (coachProfile == null)
@@ -77,7 +73,7 @@ namespace StayFit.Controllers
                 return NotFound("Coach profile not found.");
             }
 
-            var clients = await _dbContext.CoachClients
+            var clients = await DbContext.CoachClients
                 .Include(cc => cc.ClientProfile)
                 .ThenInclude(cp => cp.User)
                 .Where(cc => cc.CoachProfileId == coachProfile.Id)
@@ -99,7 +95,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var clientProfile = await _dbContext.ClientProfiles
+            var clientProfile = await DbContext.ClientProfiles
                 .FirstOrDefaultAsync(c => c.UserId == userId, ct);
 
             if (clientProfile == null)
@@ -107,7 +103,7 @@ namespace StayFit.Controllers
                 return NotFound("Client profile not found.");
             }
 
-            var coaches = await _dbContext.CoachClients
+            var coaches = await DbContext.CoachClients
                 .Include(cc => cc.CoachProfile)
                 .ThenInclude(cp => cp.User)
                 .Where(cc => cc.ClientProfileId == clientProfile.Id)
@@ -129,7 +125,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var coachClient = await _dbContext.CoachClients
+            var coachClient = await DbContext.CoachClients
                 .Include(cc => cc.CoachProfile)
                 .FirstOrDefaultAsync(cc => cc.Id == id, ct);
 
@@ -149,7 +145,7 @@ namespace StayFit.Controllers
             }
 
             coachClient.Status = CoachClientStatus.Accepted;
-            await _dbContext.SaveChangesAsync(ct);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok();
         }
@@ -160,7 +156,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var coachClient = await _dbContext.CoachClients
+            var coachClient = await DbContext.CoachClients
                 .Include(cc => cc.CoachProfile)
                 .FirstOrDefaultAsync(cc => cc.Id == id, ct);
 
@@ -180,7 +176,7 @@ namespace StayFit.Controllers
             }
 
             coachClient.Status = CoachClientStatus.Rejected;
-            await _dbContext.SaveChangesAsync(ct);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok();
         }
@@ -191,7 +187,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var coachClient = await _dbContext.CoachClients
+            var coachClient = await DbContext.CoachClients
                 .Include(cc => cc.CoachProfile)
                 .Include(cc => cc.ClientProfile)
                 .FirstOrDefaultAsync(cc => cc.Id == id, ct);
@@ -208,20 +204,10 @@ namespace StayFit.Controllers
                 return Forbid();
             }
 
-            _dbContext.CoachClients.Remove(coachClient);
-            await _dbContext.SaveChangesAsync(ct);
+            DbContext.CoachClients.Remove(coachClient);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok();
-        }
-
-        private long GetCurrentUserId()
-        {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new UnauthorizedAccessException();
-            }
-            return long.Parse(id);
         }
     }
 }

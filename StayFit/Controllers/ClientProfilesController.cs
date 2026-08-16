@@ -3,20 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StayFit.DTOs.ClientProfiles;
 using StayFit.Enums;
-using System.Security.Claims;
 
 namespace StayFit.Controllers
 {
     [Authorize]
     [Route("api/client-profiles")]
     [ApiController]
-    public class ClientProfilesController : ControllerBase
+    public class ClientProfilesController : BaseApiController
     {
-        private readonly StayFitDbContext _dbContext;
-
-        public ClientProfilesController(StayFitDbContext dbContext)
+        public ClientProfilesController(StayFitDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
         [Authorize(Roles = "Coach,Admin,SuperAdmin")]
@@ -28,7 +24,7 @@ namespace StayFit.Controllers
 
             if (currentUserRole == Role.Coach)
             {
-                var isLinked = await _dbContext.CoachClients
+                var isLinked = await DbContext.CoachClients
                     .AnyAsync(cc =>
                         cc.ClientProfileId == id &&
                         cc.CoachProfile.UserId == currentUserId &&
@@ -40,7 +36,7 @@ namespace StayFit.Controllers
                 }
             }
 
-            var client = await _dbContext.ClientProfiles
+            var client = await DbContext.ClientProfiles
                 .Include(c => c.User)
                 .Where(c => c.Id == id)
                 .Select(c => new ClientProfileDto
@@ -67,7 +63,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var client = await _dbContext.ClientProfiles
+            var client = await DbContext.ClientProfiles
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.UserId == userId, ct);
 
@@ -80,7 +76,7 @@ namespace StayFit.Controllers
             client.DateOfBirth = dto.DateOfBirth;
             client.Gender = dto.Gender;
 
-            await _dbContext.SaveChangesAsync(ct);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok(new ClientProfileDto
             {
@@ -90,26 +86,6 @@ namespace StayFit.Controllers
                 DateOfBirth = client.DateOfBirth,
                 Gender = client.Gender
             });
-        }
-
-        private long GetCurrentUserId()
-        {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new UnauthorizedAccessException();
-            }
-            return long.Parse(id);
-        }
-
-        private Role GetCurrentUserRole()
-        {
-            var role = User.FindFirstValue(ClaimTypes.Role);
-            if (string.IsNullOrEmpty(role))
-            {
-                throw new UnauthorizedAccessException();
-            }
-            return Enum.Parse<Role>(role);
         }
     }
 }

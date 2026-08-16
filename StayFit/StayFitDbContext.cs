@@ -20,7 +20,7 @@ namespace StayFit
                     Id = 1,
                     Name = "SuperAdmin",
                     Email = "admin@stayfit.com",
-                    HashedPassword = "$2a$11$Mzk70htfh0FoBhAjRmOyCut9KEwac/aFMYjmZxEA77grz3pZRbIBW",
+                    HashedPassword = "$2a$11$Mzk70htfh0FoBhAjRmOyCut9KEwac/aFMYjmZxEA77grz3pZRbIBW", //SuperAdmin123
                     Role = Role.SuperAdmin,
                     CreatedAt = new DateTime(2026, 8, 15)
                 });

@@ -2,27 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StayFit.DTOs.Users;
-using System.Security.Claims;
 
 namespace StayFit.Controllers
 {
     [Authorize]
     [Route("api/Users")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
-        private readonly StayFitDbContext _dbContext;
-
-        public UsersController(StayFitDbContext dbContext)
+        public UsersController(StayFitDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
         [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers([FromQuery] FilterUsers filterUsers, CancellationToken ct)
         {
-            var query = _dbContext.Users.AsQueryable();
+            var query = DbContext.Users.AsQueryable();
 
             if (filterUsers.Id.HasValue)
             {
@@ -54,7 +50,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId, ct);
+            var user = await DbContext.Users.FirstOrDefaultAsync(x => x.Id == userId, ct);
 
             if (user == null)
             {
@@ -75,7 +71,7 @@ namespace StayFit.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId, ct);
+            var user = await DbContext.Users.FirstOrDefaultAsync(x => x.Id == userId, ct);
 
             if (user == null)
             {
@@ -85,7 +81,7 @@ namespace StayFit.Controllers
             user.Name = saveUserDto.Name;
             user.Email = saveUserDto.Email;
 
-            await _dbContext.SaveChangesAsync(ct);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok(new UserDto
             {
@@ -100,26 +96,26 @@ namespace StayFit.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(long id, CancellationToken ct)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id, ct);
+            var user = await DbContext.Users.FirstOrDefaultAsync(x => x.Id == id, ct);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            var hasRelatedData = await _dbContext.CoachClients
+            var hasRelatedData = await DbContext.CoachClients
                 .AnyAsync(x => x.CoachProfile.UserId == id || x.ClientProfile.UserId == id, ct)
-                || await _dbContext.NutritionPlans
+                || await DbContext.NutritionPlans
                 .AnyAsync(x => x.CoachProfile.UserId == id || x.ClientProfile.UserId == id, ct)
-                || await _dbContext.WorkoutPlans
+                || await DbContext.WorkoutPlans
                 .AnyAsync(x => x.CoachProfile.UserId == id || x.ClientProfile.UserId == id, ct)
-                || await _dbContext.Meals
+                || await DbContext.Meals
                 .AnyAsync(x => x.ClientProfile.UserId == id, ct)
-                || await _dbContext.WorkoutLogs
+                || await DbContext.WorkoutLogs
                 .AnyAsync(x => x.ClientProfile.UserId == id, ct)
-                || await _dbContext.WeightLogs
+                || await DbContext.WeightLogs
                 .AnyAsync(x => x.ClientProfile.UserId == id, ct)
-                || await _dbContext.Goals
+                || await DbContext.Goals
                 .AnyAsync(x => x.ClientProfile.UserId == id, ct);
 
             if (hasRelatedData)
@@ -127,20 +123,10 @@ namespace StayFit.Controllers
                 return BadRequest("Cannot delete user with related data.");
             }
 
-            _dbContext.Users.Remove(user);
-            await _dbContext.SaveChangesAsync(ct);
+            DbContext.Users.Remove(user);
+            await DbContext.SaveChangesAsync(ct);
 
             return Ok();
-        }
-
-        private long GetCurrentUserId()
-        {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new UnauthorizedAccessException();
-            }
-            return long.Parse(id);
         }
     }
 }
