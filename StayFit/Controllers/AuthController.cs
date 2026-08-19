@@ -13,7 +13,7 @@ using StayFit.DTOs.Login;
 
 namespace StayFit.Controllers
 {
-    [Route("api/Auth")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -26,7 +26,26 @@ namespace StayFit.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("RegisterCoach")]
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPost("register-admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminDto dto, CancellationToken ct)
+        {
+            var email = dto.Email.Trim().ToLower();
+
+            if (await _dbContext.Users.AnyAsync(u => u.Email.ToLower() == email, ct))
+            {
+                return BadRequest("Email already exists");
+            }
+
+            var user = CreateUser(dto.Name, dto.Email, dto.Password, Role.Admin);
+
+            _dbContext.Users.Add(user);
+            await _dbContext.SaveChangesAsync(ct);
+
+            return Ok();
+        }
+
+        [HttpPost("register-coach")]
         public async Task<IActionResult> RegisterCoach([FromBody] RegisterCoachDto dto, CancellationToken ct)
         {
             var email = dto.Email.Trim().ToLower();
@@ -38,7 +57,7 @@ namespace StayFit.Controllers
 
             using var transaction = await _dbContext.Database.BeginTransactionAsync(ct);
 
-            var user = CreateUser(dto.Name, dto.Email, dto.Password, Role.Coach);
+            var user = CreateUser(dto.Name, dto.Email, dto.Password, Role.Coach, isApproved: false);
 
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync(ct);
@@ -60,7 +79,7 @@ namespace StayFit.Controllers
 
         }
 
-        [HttpPost("RegisterClient")]
+        [HttpPost("register-client")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientDto dto, CancellationToken ct)
         {
             var email = dto.Email.Trim().ToLower();
@@ -94,7 +113,7 @@ namespace StayFit.Controllers
 
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto, CancellationToken ct)
         {
 
@@ -113,6 +132,11 @@ namespace StayFit.Controllers
             if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.HashedPassword))
             {
                 return BadRequest("Invalid email or password");
+            }
+
+            if(!user.IsApproved)
+            {
+                return BadRequest("Your account is pending admin approval.");
             }
 
             var token = GenerateJwtToken(user);
@@ -146,7 +170,7 @@ namespace StayFit.Controllers
 
         }
 
-        private User CreateUser(string Name, string Email, string password, Role role)
+        private User CreateUser(string Name, string Email, string password, Role role, bool isApproved = true)
         {
             return new User
             {
@@ -154,6 +178,7 @@ namespace StayFit.Controllers
                 Email = Email.Trim().ToLower(),
                 HashedPassword = BCrypt.Net.BCrypt.HashPassword(password),
                 Role = role,
+                IsApproved = isApproved,
                 CreatedAt = DateTime.UtcNow
             };
         }

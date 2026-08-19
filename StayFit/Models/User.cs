@@ -18,6 +18,7 @@ namespace StayFit.Models
         [MaxLength(255)]
         public string HashedPassword { get; set; } = string.Empty;
         public Role Role { get; set; }
+        public bool IsApproved { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -1,0 +1,172 @@
+<div class="hero-block">
+  <svg
+    class="hero-block__bg"
+    width="100%"
+    height="100%"
+    viewBox="0 0 680 380"
+    preserveAspectRatio="none"
+    style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0"
+    aria-hidden="true"
+  >
+    <line x1="-40" y1="0" x2="-160" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.06" />
+    <line x1="60" y1="0" x2="-60" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.07" />
+    <line x1="160" y1="0" x2="40" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.07" />
+    <line x1="260" y1="0" x2="140" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.08" />
+    <line x1="360" y1="0" x2="240" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.08" />
+    <line x1="460" y1="0" x2="340" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.09" />
+    <line x1="560" y1="0" x2="440" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.09" />
+    <line x1="660" y1="0" x2="540" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.09" />
+    <line x1="760" y1="0" x2="640" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.08" />
+    <line x1="860" y1="0" x2="740" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.07" />
+
+    <circle class="hero-block__drift hero-block__drift--a" cx="80" cy="330" r="90" fill="#1F3D2B" opacity="0.05" />
+    <circle class="hero-block__drift hero-block__drift--b" cx="600" cy="50" r="110" fill="#1F3D2B" opacity="0.06" />
+    <circle cx="600" cy="50" r="65" fill="none" stroke="#1F3D2B" stroke-width="1" opacity="0.15" />
+    <circle cx="340" cy="200" r="130" fill="none" stroke="#1F3D2B" stroke-width="1" opacity="0.05" />
+
+    <g fill="#1F3D2B" opacity="0.13">
+      <circle cx="40" cy="50" r="2.5" /><circle cx="70" cy="50" r="2.5" /><circle cx="100" cy="50" r="2.5" /><circle cx="130" cy="50" r="2.5" />
+      <circle cx="40" cy="75" r="2.5" /><circle cx="70" cy="75" r="2.5" /><circle cx="100" cy="75" r="2.5" /><circle cx="130" cy="75" r="2.5" />
+      <circle cx="40" cy="100" r="2.5" /><circle cx="70" cy="100" r="2.5" /><circle cx="100" cy="100" r="2.5" /><circle cx="130" cy="100" r="2.5" />
+
+      <circle cx="540" cy="300" r="2.5" /><circle cx="570" cy="300" r="2.5" /><circle cx="600" cy="300" r="2.5" /><circle cx="630" cy="300" r="2.5" />
+      <circle cx="540" cy="325" r="2.5" /><circle cx="570" cy="325" r="2.5" /><circle cx="600" cy="325" r="2.5" /><circle cx="630" cy="325" r="2.5" />
+      <circle cx="540" cy="350" r="2.5" /><circle cx="570" cy="350" r="2.5" /><circle cx="600" cy="350" r="2.5" /><circle cx="630" cy="350" r="2.5" />
+
+      <circle cx="280" cy="330" r="2" /><circle cx="305" cy="330" r="2" /><circle cx="330" cy="330" r="2" />
+    </g>
+
+    <path
+      class="hero-block__pulse"
+      d="M -20 285 L 100 285 L 115 258 L 130 306 L 145 285 L 260 285 L 275 264 L 290 300 L 305 285 L 700 285"
+      fill="none"
+      stroke="#1F3D2B"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-dasharray="8 6"
+      opacity="0.16"
+    />
+  </svg>
+
+  <div class="hero-block__content">
+    <header class="header">
+      <div class="header__inner">
+        <app-logo></app-logo>
+        <nav class="header__nav">
+          <a class="btn btn--outline" routerLink="/auth/login">Log in</a>
+          <app-register-menu variant="filled">Register</app-register-menu>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero__main">
+        <h1 class="hero__title">Your weight, your meals, your plan — all in your control.</h1>
+        <p class="hero__subtitle">
+          A platform that connects coaches with clients through clear plans and daily tracking.
+        </p>
+        <div class="hero__actions">
+          <app-register-menu variant="filled">Get started</app-register-menu>
+          <a class="btn btn--outline" routerLink="/coaches">Browse coaches</a>
+        </div>
+
+        <div class="hero__stats">
+          <div class="stat">
+            <span class="stat__value">{{ animatedCoaches.toLocaleString() }}</span>
+            <span class="stat__label">Coaches</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value">{{ animatedWorkoutLogs.toLocaleString() }}</span>
+            <span class="stat__label">Sessions logged</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value">{{ animatedMeals.toLocaleString() }}</span>
+            <span class="stat__label">Meals tracked</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__ring" aria-hidden="true">
+        <svg width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+          <circle class="hero__ring-pulse" cx="70" cy="70" r="55" fill="none" stroke="#1F3D2B" stroke-width="2" />
+          <circle cx="70" cy="70" r="55" fill="none" stroke="#E4E0D2" stroke-width="1.5" />
+          <circle cx="70" cy="70" r="38" fill="none" stroke="#C9C4B0" stroke-width="1.5" />
+          <circle cx="70" cy="70" r="21" fill="none" stroke="#8FA090" stroke-width="1.5" />
+          <circle cx="70" cy="70" r="7" fill="#1F3D2B" />
+        </svg>
+      </div>
+    </section>
+  </div>
+</div>
+
+<section class="services">
+  <div class="services__inner">
+    <span class="services__label">Services</span>
+    <div class="services__grid">
+      <div class="service">
+        <svg class="service__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 8c-2 0-4 1.5-4 5.5C5 17 7.5 20 9.5 20c1 0 1.4-.5 2.5-.5s1.5.5 2.5.5c2 0 4.5-3 4.5-6.5C19 9.5 17 8 15 8c-1.2 0-1.8.6-3 .6S10.2 8 9 8Z" />
+          <path d="M12 8c0-1.5.5-3 2-3.5" />
+        </svg>
+        <h3 class="service__title">Meal tracking</h3>
+        <p class="service__desc">Log what you eat and know your calories precisely.</p>
+      </div>
+      <div class="service">
+        <svg class="service__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12h2" />
+          <path d="M6 8v8" />
+          <path d="M6 12h12" />
+          <path d="M18 8v8" />
+          <path d="M22 12h-2" />
+          <rect x="3" y="10" width="3" height="4" rx="0.5" />
+          <rect x="18" y="10" width="3" height="4" rx="0.5" />
+        </svg>
+        <h3 class="service__title">Workout plans</h3>
+        <p class="service__desc">A plan built by your coach around your goal.</p>
+      </div>
+      <div class="service">
+        <svg class="service__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+        </svg>
+        <h3 class="service__title">Direct messaging</h3>
+        <p class="service__desc">Message your coach whenever you need to.</p>
+      </div>
+      <div class="service">
+        <svg class="service__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19h16" />
+          <path d="M4 19V5" />
+          <path d="M4 15l4-4 3 3 6-7" />
+        </svg>
+        <h3 class="service__title">Progress tracking</h3>
+        <p class="service__desc">Your weight and goals on a clear chart.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div class="footer__col">
+      <span class="footer__heading">StayFit</span>
+      <p class="footer__desc">
+        A platform connecting coaches with their clients, tracking meals, workouts, and progress
+        in one place.
+      </p>
+    </div>
+    <div class="footer__col">
+      <span class="footer__heading">Services</span>
+      <span class="footer__text">Meal tracking</span>
+      <span class="footer__text">Workout plans</span>
+      <span class="footer__text">Weight and goal tracking</span>
+    </div>
+    <div class="footer__col">
+      <span class="footer__heading">Account</span>
+      <a class="footer__link" routerLink="/auth/login">Log in</a>
+      <app-register-menu class="footer__link" variant="text">Create account</app-register-menu>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copyright">&copy; 2026 StayFit</span>
+  </div>
+</footer>

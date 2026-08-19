@@ -1,0 +1,203 @@
+:host {
+  display: block;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.goals-page {
+  padding: 40px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f3d2b;
+    margin: 0 0 4px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: #5c6b5e;
+    margin: 0;
+  }
+}
+
+.btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  font-family: inherit;
+
+  &--filled {
+    background: #1f3d2b;
+    color: #f5f3ec;
+    border: 1px solid #1f3d2b;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+
+  &--empty p {
+    font-size: 13px;
+    color: #5c6b5e;
+    margin: 0;
+  }
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: #1f3d2b;
+  }
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.goal-card {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 10px;
+  padding: 20px;
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #efebdd;
+    color: #1f3d2b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__type {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f3d2b;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    color: #5c6b5e;
+    cursor: pointer;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background: #efebdd;
+      color: #1f3d2b;
+    }
+
+    &--danger {
+      color: #b34747;
+
+      &:hover {
+        background: #efebdd;
+        color: #b34747;
+      }
+    }
+  }
+
+  &__meta {
+    font-size: 12px;
+    color: #8a8674;
+    margin: 0 0 12px;
+  }
+
+  &__track {
+    width: 100%;
+    height: 6px;
+    border-radius: 20px;
+    background: #e4e0d2;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 20px;
+    background: #1f3d2b;
+  }
+
+  &__percent {
+    font-size: 11px;
+    color: #5c6b5e;
+    margin: 8px 0 0;
+  }
+}

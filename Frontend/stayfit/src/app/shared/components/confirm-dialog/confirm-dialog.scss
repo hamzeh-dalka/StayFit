@@ -1,0 +1,57 @@
+:host {
+  display: block;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  font-family: inherit;
+
+  &--outline {
+    background: transparent;
+    color: #1f3d2b;
+    border: 1px solid #c9c4b0;
+  }
+
+  &--danger {
+    background: transparent;
+    color: #b34747;
+    border: 1px solid #e4a0a0;
+  }
+}
+
+.confirm-dialog__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f3d2b;
+}
+
+.confirm-dialog__message {
+  font-size: 13px;
+  color: #5c6b5e;
+  line-height: 1.5;
+  margin: 0;
+}
+
+[mat-dialog-actions] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

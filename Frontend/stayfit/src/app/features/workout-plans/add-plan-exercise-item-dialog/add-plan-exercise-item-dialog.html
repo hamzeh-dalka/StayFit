@@ -1,0 +1,67 @@
+<h2 mat-dialog-title class="dialog-title">Add exercise</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <div class="field">
+      <label for="exercise">Exercise</label>
+      <input
+        id="exercise"
+        type="text"
+        formControlName="exercise"
+        [matAutocomplete]="auto"
+        placeholder="Search exercises…"
+        autocomplete="off"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        class="app-autocomplete-panel"
+        [displayWith]="displayExercise"
+        (optionSelected)="onOptionSelected($event)"
+      >
+        @if (searching) {
+          <mat-option disabled>Searching…</mat-option>
+        } @else if (hasQuery && searchResults.length === 0) {
+          <mat-option disabled>No matches found</mat-option>
+        } @else {
+          @for (item of searchResults; track item.id) {
+            <mat-option [value]="item">
+              {{ item.exerciseName }}
+              <span class="option-meta">— {{ item.muscleGroup }}</span>
+            </mat-option>
+          }
+        }
+      </mat-autocomplete>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="sets">Sets</label>
+        <input id="sets" type="number" formControlName="sets" min="1" />
+      </div>
+      <div class="field">
+        <label for="reps">Reps</label>
+        <input id="reps" type="number" formControlName="reps" min="1" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="dayOfWeek">Day</label>
+      <select id="dayOfWeek" formControlName="dayOfWeek">
+        @for (day of days; track day) {
+          <option [ngValue]="day">{{ dayLabel(day) }}</option>
+        }
+      </select>
+    </div>
+
+    @if (errorMessage) {
+      <p class="form-error">{{ errorMessage }}</p>
+    }
+  </div>
+
+  <div mat-dialog-actions>
+    <button type="button" class="btn btn--outline" (click)="cancel()">Cancel</button>
+    <button type="submit" class="btn btn--filled" [disabled]="submitting">
+      {{ submitting ? 'Adding…' : 'Add exercise' }}
+    </button>
+  </div>
+</form>

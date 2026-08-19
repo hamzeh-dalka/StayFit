@@ -71,7 +71,7 @@ namespace StayFit.Controllers
             return Ok(foodItem);
         }
 
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateFoodItem([FromBody] SaveFoodItemDto dto, CancellationToken ct)
         {
@@ -98,7 +98,7 @@ namespace StayFit.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateFoodItem(long id, [FromBody] SaveFoodItemDto dto, CancellationToken ct)
         {
@@ -128,7 +128,7 @@ namespace StayFit.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFoodItem(long id, CancellationToken ct)
         {

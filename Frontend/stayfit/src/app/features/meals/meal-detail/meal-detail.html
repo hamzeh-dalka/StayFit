@@ -1,0 +1,54 @@
+<div class="meal-detail-page">
+  <main class="detail-main">
+    <a class="back-link" routerLink="/meals">← Back to meals</a>
+
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+      </div>
+    } @else if (notFound) {
+      <div class="state state--empty">
+        <p>Meal not found.</p>
+        <a class="link" routerLink="/meals">Back to meals</a>
+      </div>
+    } @else if (meal) {
+      <div class="meal-header">
+        <div>
+          <h1 class="meal-header__title">{{ meal.mealType }}</h1>
+          <p class="meal-header__subtitle">{{ formattedDateTime }} · {{ totalCalories }} kcal total</p>
+        </div>
+        <div class="meal-header__actions">
+          <button type="button" class="btn btn--outline" (click)="openEditDialog()">Edit</button>
+          <button type="button" class="btn btn--danger" (click)="confirmDelete()">Delete</button>
+        </div>
+      </div>
+
+      <div class="card">
+        @if (meal.items.length === 0) {
+          <p class="card__empty">No food items added yet.</p>
+        } @else {
+          <ul class="item-list">
+            @for (item of meal.items; track item.id) {
+              <li class="item-list__row">
+                <span class="item-list__name">{{ item.foodItemName }}</span>
+                <span class="item-list__meta">{{ item.quantityInGrams }}g · {{ itemCalories(item) }} kcal</span>
+                <button
+                  type="button"
+                  class="item-list__remove"
+                  (click)="removeItem(item)"
+                  aria-label="Remove item"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <button type="button" class="btn btn--outline add-item-btn" (click)="openAddItemDialog()">
+        Add food item
+      </button>
+    }
+  </main>
+</div>

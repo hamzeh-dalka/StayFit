@@ -1,0 +1,69 @@
+<div class="users-page">
+  <header class="users-page__header">
+    <div>
+      <h1 class="users-page__title">Users</h1>
+      <p class="users-page__subtitle">Manage every account on the platform.</p>
+    </div>
+    <button type="button" class="btn btn--filled" (click)="openAddAdminDialog()">
+      <mat-icon>add_moderator</mat-icon>
+      Add admin
+    </button>
+  </header>
+
+  <div class="search-field">
+    <mat-icon class="search-field__icon">search</mat-icon>
+    <input
+      type="text"
+      class="search-field__input"
+      placeholder="Search by name…"
+      [formControl]="search"
+    />
+  </div>
+
+  <div class="card">
+    <div class="table-header">
+      <span>Name</span>
+      <span>Email</span>
+      <span>Role</span>
+      <span></span>
+    </div>
+
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else if (users.length === 0) {
+      <p class="card__empty">No users found.</p>
+    } @else {
+      @for (user of users; track user.id) {
+        <div class="table-row">
+          <span class="table-row__name">{{ user.name }}</span>
+          <span class="table-row__email">{{ user.email }}</span>
+          <span>
+            <span class="role-pill" [class.role-pill--super]="isSuperAdmin(user.role)">{{ user.role }}</span>
+          </span>
+          <span class="table-row__actions">
+            @if (!isSuperAdmin(user.role)) {
+              <button
+                type="button"
+                class="icon-btn"
+                aria-label="Delete user"
+                (click)="confirmDelete(user)"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            }
+          </span>
+        </div>
+      }
+    }
+  </div>
+
+  @if (!loading && users.length > 0) {
+    <div class="pagination">
+      <button type="button" class="page-btn" [disabled]="pageNumber === 1" (click)="prevPage()">Previous</button>
+      <span class="page-btn page-btn--current">{{ pageNumber }}</span>
+      <button type="button" class="page-btn" [disabled]="!hasNextPage" (click)="nextPage()">Next</button>
+    </div>
+  }
+</div>

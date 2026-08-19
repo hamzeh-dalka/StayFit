@@ -1,0 +1,41 @@
+<h2 mat-dialog-title class="dialog-title">{{ isEdit ? 'Edit goal' : 'Add goal' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <div class="field">
+      <label for="goalType">Goal type</label>
+      <select id="goalType" formControlName="goalType">
+        @for (type of goalTypes; track type) {
+          <option [value]="type">{{ goalTypeLabel(type) }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="targetValue">Target value</label>
+        <input id="targetValue" type="number" formControlName="targetValue" min="0" step="0.1" />
+      </div>
+      <div class="field">
+        <label for="currentValue">Current progress</label>
+        <input id="currentValue" type="number" formControlName="currentValue" min="0" step="0.1" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="deadline">Deadline</label>
+      <input id="deadline" type="date" formControlName="deadline" />
+    </div>
+
+    @if (errorMessage) {
+      <p class="form-error">{{ errorMessage }}</p>
+    }
+  </div>
+
+  <div mat-dialog-actions>
+    <button type="button" class="btn btn--outline" (click)="cancel()">Cancel</button>
+    <button type="submit" class="btn btn--filled" [disabled]="submitting">
+      {{ submitting ? 'Saving…' : isEdit ? 'Save changes' : 'Add goal' }}
+    </button>
+  </div>
+</form>

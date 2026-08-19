@@ -1,0 +1,53 @@
+<aside class="sidebar" [class.sidebar--collapsed]="collapsed()">
+  <div class="sidebar__top">
+    <app-logo [showWordmark]="!collapsed()"></app-logo>
+    <button
+      type="button"
+      class="sidebar__toggle"
+      (click)="toggle()"
+      [attr.aria-label]="collapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+    >
+      <mat-icon>{{ collapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+
+  <nav class="sidebar__nav">
+    @for (item of navItems(); track item.path) {
+      <a
+        class="nav-item"
+        [routerLink]="item.path"
+        routerLinkActive="nav-item--active"
+        [attr.aria-label]="collapsed() ? item.label : null"
+      >
+        <mat-icon class="nav-item__icon">{{ item.icon }}</mat-icon>
+        @if (!collapsed()) {
+          <span class="nav-item__label">{{ item.label }}</span>
+        }
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar__bottom">
+    <div class="sidebar__user">
+      <div class="sidebar__avatar">{{ initials(currentUser()?.name ?? '') }}</div>
+      @if (!collapsed()) {
+        <div class="sidebar__user-info">
+          <span class="sidebar__user-name">{{ currentUser()?.name }}</span>
+          <span class="sidebar__user-role">{{ currentUser()?.role }}</span>
+        </div>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="sidebar__logout"
+      (click)="logout()"
+      [attr.aria-label]="collapsed() ? 'Log out' : null"
+    >
+      <mat-icon>logout</mat-icon>
+      @if (!collapsed()) {
+        <span>Log out</span>
+      }
+    </button>
+  </div>
+</aside>

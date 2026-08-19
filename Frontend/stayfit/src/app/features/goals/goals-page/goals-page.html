@@ -1,0 +1,60 @@
+<div class="goals-page">
+  <header class="goals-page__header">
+    <div>
+      <h1 class="goals-page__title">Goals</h1>
+      <p class="goals-page__subtitle">What are you working toward?</p>
+    </div>
+    <button type="button" class="btn btn--filled" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Add goal
+    </button>
+  </header>
+
+  @if (loading) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else if (goals.length === 0) {
+    <div class="state state--empty">
+      <p>No goals yet. Add one to start tracking your progress.</p>
+    </div>
+  } @else {
+    <div class="goals-grid">
+      @for (goal of goals; track goal.id) {
+        <div class="goal-card">
+          <div class="goal-card__top">
+            <div class="goal-card__label">
+              <div class="goal-card__icon">
+                <mat-icon>{{ goalTypeIcon(goal.goalType) }}</mat-icon>
+              </div>
+              <span class="goal-card__type">{{ goalTypeLabel(goal.goalType) }}</span>
+            </div>
+            <div class="goal-card__actions">
+              <button type="button" class="goal-card__action" (click)="openEditDialog(goal)" aria-label="Edit goal">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                class="goal-card__action goal-card__action--danger"
+                (click)="removeGoal(goal)"
+                aria-label="Delete goal"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <p class="goal-card__meta">
+            Target: {{ goal.targetValue }} · Due {{ formatDeadline(goal.deadline) }}
+          </p>
+
+          <div class="goal-card__track">
+            <div class="goal-card__fill" [style.width.%]="progressPercent(goal)"></div>
+          </div>
+
+          <p class="goal-card__percent">{{ progressPercent(goal) | number: '1.0-0' }}% of the way there</p>
+        </div>
+      }
+    </div>
+  }
+</div>

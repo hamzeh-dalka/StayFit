@@ -1,1 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
+
+.register-menu-panel.mat-mdc-menu-panel {
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 8px;
+  min-width: 200px;
+}
+
+.app-snackbar {
+  &.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    background: #1f3d2b;
+  }
+
+  .mdc-snackbar__label {
+    color: #f5f3ec;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: #f5f3ec;
+  }
+}
+
+.app-dialog-panel .mat-mdc-dialog-surface {
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 10px;
+}
+
+.app-autocomplete-panel.mat-mdc-autocomplete-panel {
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 8px;
+}
+
+.app-autocomplete-panel .mat-mdc-option {
+  font-size: 13px;
+  color: #1f3d2b;
+  min-height: 40px;
+
+  .option-meta {
+    color: #8a8674;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+}
+
+.register-menu-panel .mat-mdc-menu-item {
+  min-height: 40px;
+
+  .mat-icon {
+    color: #1f3d2b;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .mdc-list-item__primary-text,
+  span {
+    color: #1f3d2b;
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,44 @@
+:host {
+  display: inline-flex;
+}
+
+.register-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  background: none;
+
+  &--filled {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    background: #1f3d2b;
+    color: #f5f3ec;
+    border: 1px solid #1f3d2b;
+  }
+
+  &--outline {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    color: #1f3d2b;
+    border: 1px solid #c9c4b0;
+  }
+
+  &--text {
+    color: inherit;
+    font-weight: inherit;
+  }
+}

@@ -1,0 +1,58 @@
+<div class="pills">
+  <button
+    type="button"
+    class="pill"
+    [class.pill--active]="activeSpecialty === null"
+    (click)="selectSpecialty(null)"
+  >
+    All
+  </button>
+  @for (specialty of specialties; track specialty) {
+    <button
+      type="button"
+      class="pill"
+      [class.pill--active]="activeSpecialty === specialty"
+      (click)="selectSpecialty(specialty)"
+    >
+      {{ specialtyLabel(specialty) }}
+    </button>
+  }
+</div>
+
+@if (loading) {
+  <div class="state">
+    <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+  </div>
+} @else if (coaches.length === 0) {
+  <div class="state state--empty">No coaches found for this specialty.</div>
+} @else {
+  <div class="coaches-grid">
+    @for (coach of coaches; track coach.id) {
+      <div class="coach-card">
+        <div class="coach-card__avatar">{{ initials(coach.name) }}</div>
+        <h3 class="coach-card__name">{{ coach.name }}</h3>
+        <p class="coach-card__meta">
+          {{ specialtyLabel(coach.specialty) }} · {{ coach.experienceYears }} yrs experience
+        </p>
+        <p class="coach-card__bio">{{ coach.bio }}</p>
+        <div class="coach-card__actions">
+          <a
+            class="btn btn--outline coach-card__cta"
+            [routerLink]="showRequestAction ? ['/coaches-browse', coach.id] : ['/coaches', coach.id]"
+            >View profile</a
+          >
+          @if (showRequestAction) {
+            <button
+              type="button"
+              class="btn btn--filled coach-card__cta"
+              [disabled]="requestedCoachIds.has(coach.id) || pendingRequestIds.has(coach.id)"
+              (click)="requestCoach(coach)"
+            >
+              {{ requestedCoachIds.has(coach.id) ? 'Requested' : 'Request' }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

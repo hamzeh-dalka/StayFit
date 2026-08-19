@@ -1,0 +1,73 @@
+<div class="exercises-page">
+  <header class="exercises-page__header">
+    <div>
+      <h1 class="exercises-page__title">Exercises</h1>
+      <p class="exercises-page__subtitle">Manage the exercise reference database.</p>
+    </div>
+    <button type="button" class="btn btn--filled" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      Add exercise
+    </button>
+  </header>
+
+  <div class="search-field">
+    <mat-icon class="search-field__icon">search</mat-icon>
+    <input
+      type="text"
+      class="search-field__input"
+      placeholder="Search by name…"
+      [formControl]="search"
+    />
+  </div>
+
+  <div class="card">
+    <div class="table-header">
+      <span>Exercise name</span>
+      <span>Muscle group</span>
+      <span>Calories/min</span>
+      <span></span>
+    </div>
+
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else if (exercises.length === 0) {
+      <p class="card__empty">No exercises found.</p>
+    } @else {
+      @for (exercise of exercises; track exercise.id) {
+        <div class="table-row">
+          <span class="table-row__name">{{ exercise.exerciseName }}</span>
+          <span>{{ exercise.muscleGroup }}</span>
+          <span>{{ exercise.caloriesBurnedPerMinute.toFixed(1) }}</span>
+          <span class="table-row__actions">
+            <button
+              type="button"
+              class="icon-btn icon-btn--edit"
+              aria-label="Edit exercise"
+              (click)="openEditDialog(exercise)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              type="button"
+              class="icon-btn icon-btn--delete"
+              aria-label="Delete exercise"
+              (click)="confirmDelete(exercise)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </span>
+        </div>
+      }
+    }
+  </div>
+
+  @if (!loading && exercises.length > 0) {
+    <div class="pagination">
+      <button type="button" class="page-btn" [disabled]="pageNumber === 1" (click)="prevPage()">Previous</button>
+      <span class="page-btn page-btn--current">{{ pageNumber }}</span>
+      <button type="button" class="page-btn" [disabled]="!hasNextPage" (click)="nextPage()">Next</button>
+    </div>
+  }
+</div>

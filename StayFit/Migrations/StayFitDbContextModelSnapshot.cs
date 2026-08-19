@@ -174,6 +174,9 @@ namespace StayFit.Migrations
                     b.Property<long>("ClientProfileId")
                         .HasColumnType("bigint");
 
+                    b.Property<float>("CurrentValue")
+                        .HasColumnType("real");
+
                     b.Property<DateOnly>("Deadline")
                         .HasColumnType("date");
 
@@ -419,6 +422,9 @@ namespace StayFit.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -439,8 +445,9 @@ namespace StayFit.Migrations
                         {
                             Id = 1L,
                             CreatedAt = new DateTime(2026, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@stayfit.com",
+                            Email = "superadmin@stayfit.com",
                             HashedPassword = "$2a$11$Mzk70htfh0FoBhAjRmOyCut9KEwac/aFMYjmZxEA77grz3pZRbIBW",
+                            IsApproved = true,
                             Name = "SuperAdmin",
                             Role = 1
                         });

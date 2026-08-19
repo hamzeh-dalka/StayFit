@@ -6,6 +6,7 @@ namespace StayFit.DTOs.Goals
     {
         public GoalType GoalType { get; set; }
         public float TargetValue { get; set; }
+        public float CurrentValue { get; set; }
         public DateOnly Deadline { get; set; }
     }
 }

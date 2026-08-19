@@ -1,0 +1,54 @@
+<div class="workout-detail-page">
+  <main class="detail-main">
+    <a class="back-link" routerLink="/workout-logs">← Back to workouts</a>
+
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+      </div>
+    } @else if (notFound) {
+      <div class="state state--empty">
+        <p>Workout not found.</p>
+        <a class="link" routerLink="/workout-logs">Back to workouts</a>
+      </div>
+    } @else if (workoutLog) {
+      <div class="workout-header">
+        <div>
+          <h1 class="workout-header__title">Workout session</h1>
+          <p class="workout-header__subtitle">{{ formattedDateTime }} · {{ workoutLog.durationMinutes }} min</p>
+        </div>
+        <div class="workout-header__actions">
+          <button type="button" class="btn btn--outline" (click)="openEditDialog()">Edit</button>
+          <button type="button" class="btn btn--danger" (click)="confirmDelete()">Delete</button>
+        </div>
+      </div>
+
+      <div class="card">
+        @if (workoutLog.items.length === 0) {
+          <p class="card__empty">No exercises added yet.</p>
+        } @else {
+          <ul class="item-list">
+            @for (item of workoutLog.items; track item.id) {
+              <li class="item-list__row">
+                <span class="item-list__name">{{ item.exerciseName }}</span>
+                <span class="item-list__meta">{{ item.sets }} sets · {{ item.reps }} reps</span>
+                <button
+                  type="button"
+                  class="item-list__remove"
+                  (click)="removeItem(item)"
+                  aria-label="Remove exercise"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <button type="button" class="btn btn--outline add-item-btn" (click)="openAddItemDialog()">
+        Add exercise
+      </button>
+    }
+  </main>
+</div>

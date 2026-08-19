@@ -1,0 +1,88 @@
+<div class="weight-page">
+  <header class="weight-page__header">
+    <div>
+      <h1 class="weight-page__title">Weight log</h1>
+      <p class="weight-page__subtitle">Track your weight over time.</p>
+    </div>
+    <button type="button" class="btn btn--filled" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Log weight
+    </button>
+  </header>
+
+  @if (loading) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else {
+    <div class="trend-card">
+      <div class="trend-card__top">
+        <div class="trend-card__value-group">
+          @if (latestEntry) {
+            <span class="trend-card__value">{{ latestEntry.weightKg }}<span class="trend-card__unit">kg</span></span>
+          } @else {
+            <span class="trend-card__value trend-card__value--empty">—</span>
+          }
+
+          @if (changeIndicator; as change) {
+            <span
+              class="trend-card__change"
+              [class.trend-card__change--down]="change.direction === 'down'"
+              [class.trend-card__change--up]="change.direction === 'up'"
+            >
+              <mat-icon>{{ change.direction === 'down' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+              {{ change.diffLabel }} kg {{ change.periodLabel }}
+            </span>
+          }
+        </div>
+
+        <div class="pills">
+          @for (p of periods; track p) {
+            <button type="button" class="pill" [class.pill--active]="period === p" (click)="selectPeriod(p)">
+              {{ p }}
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (chart; as c) {
+        <svg class="trend-chart" viewBox="0 0 240 60" preserveAspectRatio="none">
+          <polyline
+            [attr.points]="c.polyline"
+            fill="none"
+            stroke="#1F3D2B"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle [attr.cx]="c.last.x" [attr.cy]="c.last.y" r="3.5" fill="#1F3D2B" />
+        </svg>
+      } @else {
+        <p class="trend-card__empty">Not enough data for this period.</p>
+      }
+    </div>
+
+    <div class="card">
+      @if (entries.length === 0) {
+        <p class="card__empty">No weight entries yet.</p>
+      } @else {
+        <ul class="entry-list">
+          @for (entry of entries; track entry.id) {
+            <li class="entry-list__row">
+              <span class="entry-list__value">{{ entry.weightKg }} kg</span>
+              <span class="entry-list__date">{{ formatRelativeDate(entry.recordedAt) }}</span>
+              <button
+                type="button"
+                class="entry-list__remove"
+                (click)="removeEntry(entry)"
+                aria-label="Remove entry"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</div>

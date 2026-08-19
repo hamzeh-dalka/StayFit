@@ -1,0 +1,53 @@
+<div class="my-clients-page">
+  <header class="my-clients-page__header">
+    <h1 class="my-clients-page__title">My clients</h1>
+    <p class="my-clients-page__subtitle">Your active clients.</p>
+  </header>
+
+  @if (loading) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else if (clients.length === 0) {
+    <div class="state state--empty">
+      <p>You don't have any clients yet.</p>
+    </div>
+  } @else {
+    <div class="clients-grid">
+      @for (client of clients; track client.id) {
+        <div class="client-card">
+          <div class="client-card__top">
+            <div class="client-card__avatar">{{ initials(client.name) }}</div>
+            <div class="client-card__info">
+              <span class="client-card__name">{{ client.name }}</span>
+              <span class="client-card__since">Client since {{ formatShortDate(client.requestedAt) }}</span>
+            </div>
+          </div>
+
+          <div class="client-card__actions">
+            <a class="pill" [routerLink]="['/messages', client.userId]">
+              <mat-icon>chat</mat-icon>
+              Message
+            </a>
+            <a
+              class="pill"
+              [routerLink]="['/nutrition-plans/create']"
+              [queryParams]="{ clientProfileId: client.clientProfileId }"
+            >
+              <mat-icon>restaurant_menu</mat-icon>
+              New nutrition plan
+            </a>
+            <a
+              class="pill"
+              [routerLink]="['/workout-plans/create']"
+              [queryParams]="{ clientProfileId: client.clientProfileId }"
+            >
+              <mat-icon>assignment</mat-icon>
+              New workout plan
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

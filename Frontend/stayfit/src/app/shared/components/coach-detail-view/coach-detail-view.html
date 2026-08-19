@@ -1,0 +1,30 @@
+<a class="back-link" [routerLink]="backLink">← Back to coaches</a>
+
+@if (loading) {
+  <div class="state">
+    <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+  </div>
+} @else if (notFound) {
+  <div class="state state--empty">
+    <p>Coach not found.</p>
+    <a class="link" [routerLink]="backLink">Back to coaches</a>
+  </div>
+} @else if (coach) {
+  <section class="profile">
+    <div class="profile__header">
+      <div class="profile__avatar">{{ initials(coach.name) }}</div>
+      <div class="profile__identity">
+        <h1 class="profile__name">{{ coach.name }}</h1>
+        <div class="profile__meta">
+          <span class="pill pill--filled">{{ specialtyLabel(coach.specialty) }}</span>
+          <span class="profile__experience">{{ coach.experienceYears }} years experience</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile__about">
+      <h2 class="profile__about-label">About</h2>
+      <p class="profile__bio">{{ coach.bio || 'This coach has not added a bio yet.' }}</p>
+    </div>
+  </section>
+}

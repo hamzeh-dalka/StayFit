@@ -1,0 +1,37 @@
+<div class="workouts-page">
+  <header class="workouts-page__header">
+    <div>
+      <h1 class="workouts-page__title">Workouts</h1>
+      <p class="workouts-page__subtitle">Log your training sessions.</p>
+    </div>
+    <button type="button" class="btn btn--filled" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Log a workout
+    </button>
+  </header>
+
+  <div class="card">
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else if (workoutLogs.length === 0) {
+      <p class="card__empty">No workouts logged yet.</p>
+    } @else {
+      <ul class="workout-list">
+        @for (log of workoutLogs; track log.id) {
+          <li class="workout-list__row" (click)="openRow(log)">
+            <div class="workout-list__icon">
+              <mat-icon>fitness_center</mat-icon>
+            </div>
+            <div class="workout-list__info">
+              <span class="workout-list__type">Workout session</span>
+              <span class="workout-list__date">{{ formatRelativeDate(log.loggedAt) }} · {{ log.durationMinutes }} min</span>
+            </div>
+            <mat-icon class="workout-list__chevron">chevron_right</mat-icon>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

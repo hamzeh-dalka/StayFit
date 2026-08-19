@@ -1,0 +1,169 @@
+:host {
+  display: block;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+.dashboard {
+  padding: 40px;
+
+  &__title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1f3d2b;
+    margin: 0 0 4px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: #5c6b5e;
+    margin: 0 0 28px;
+  }
+}
+
+.state {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: #1f3d2b;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 10px;
+  padding: 16px;
+
+  &__icon {
+    color: #1f3d2b;
+
+    &.mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f3d2b;
+  }
+
+  &__label {
+    font-size: 12px;
+    color: #8a8674;
+  }
+}
+
+.secondary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 10px;
+  padding: 20px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f3d2b;
+    margin: 0;
+  }
+
+  &__link {
+    font-size: 12px;
+    color: #5c6b5e;
+  }
+
+  &__empty {
+    font-size: 13px;
+    color: #5c6b5e;
+    margin: 0;
+  }
+}
+
+.meal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 0.5px solid #e4e0d2;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+  }
+
+  &__type {
+    font-size: 13px;
+    color: #1f3d2b;
+  }
+
+  &__date {
+    font-size: 12px;
+    color: #8a8674;
+  }
+}
+
+.weight-chart {
+  width: 100%;
+  height: 60px;
+  display: block;
+}

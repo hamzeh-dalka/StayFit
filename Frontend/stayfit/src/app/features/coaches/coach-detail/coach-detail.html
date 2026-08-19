@@ -1,0 +1,20 @@
+<div class="coach-detail-page">
+  <header class="header">
+    <div class="header__inner">
+      <app-logo></app-logo>
+      <nav class="header__nav">
+        <a class="link" routerLink="/auth/login">Log in</a>
+        <app-register-menu variant="filled">Register</app-register-menu>
+      </nav>
+    </div>
+  </header>
+
+  <main class="detail-main">
+    <app-coach-detail-view
+      [coach]="coach"
+      [loading]="loading"
+      [notFound]="notFound"
+      backLink="/coaches"
+    ></app-coach-detail-view>
+  </main>
+</div>

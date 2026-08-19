@@ -1,0 +1,83 @@
+<div class="workout-plans-page">
+  <header class="workout-plans-page__header">
+    <div>
+      <h1 class="workout-plans-page__title">Workout plans</h1>
+      <p class="workout-plans-page__subtitle">Plans you've created for your clients.</p>
+    </div>
+    <button type="button" class="btn btn--filled" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      New plan
+    </button>
+  </header>
+
+  <div class="card">
+    @if (loadingList()) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else if (plans().length === 0) {
+      <p class="card__empty">You haven't created any workout plans yet.</p>
+    } @else {
+      <ul class="plan-list">
+        @for (plan of plans(); track plan.id) {
+          <li
+            class="plan-list__row"
+            [class.plan-list__row--active]="plan.id === selectedPlan()?.id"
+            (click)="selectPlan(plan.id)"
+          >
+            <div class="plan-list__info">
+              <span class="plan-list__title">{{ plan.title }}</span>
+              <span class="plan-list__meta">
+                For {{ plan.clientName }} · Created {{ formatShortDate(plan.createdAt) }}
+              </span>
+            </div>
+            <mat-icon class="plan-list__chevron">chevron_right</mat-icon>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  @if (loadingDetail()) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else if (selectedPlan(); as plan) {
+    <section class="plan-detail">
+      <span class="plan-detail__label">{{ plan.title }}</span>
+
+      <div class="pills">
+        @for (day of availableDays(); track day) {
+          <button
+            type="button"
+            class="pill"
+            [class.pill--active]="selectedDay() === day"
+            (click)="selectDay(day)"
+          >
+            {{ dayLabel(day) }}
+          </button>
+        }
+      </div>
+
+      <div class="card">
+        @if (dayItems().length === 0) {
+          <p class="card__empty">No items for this day yet.</p>
+        } @else {
+          <ul class="item-list">
+            @for (item of dayItems(); track item.id) {
+              <li class="item-list__row">
+                <span class="item-list__name">{{ item.exerciseName }}</span>
+                <span class="item-list__meta">{{ item.sets }} sets - {{ item.reps }} reps</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <button type="button" class="btn btn--outline btn--add" (click)="openAddItemDialog()">
+        <mat-icon>add</mat-icon>
+        Add exercise
+      </button>
+    </section>
+  }
+</div>

@@ -1,0 +1,100 @@
+<div class="plans-page">
+  <header class="plans-page__header">
+    <h1 class="plans-page__title">Plans</h1>
+    <p class="plans-page__subtitle">Plans your coach has created for you.</p>
+  </header>
+
+  <div class="tabs">
+    <button
+      type="button"
+      class="tab"
+      [class.tab--active]="activeTab() === 'nutrition'"
+      (click)="selectTab('nutrition')"
+    >
+      Nutrition
+    </button>
+    <button
+      type="button"
+      class="tab"
+      [class.tab--active]="activeTab() === 'workout'"
+      (click)="selectTab('workout')"
+    >
+      Workout
+    </button>
+  </div>
+
+  <div class="card">
+    @if (loadingList() && currentPlans() === null) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else if (!currentPlans() || currentPlans()!.length === 0) {
+      <p class="card__empty">
+        {{ activeTab() === 'nutrition' ? 'No nutrition plans yet.' : 'No workout plans yet.' }}
+      </p>
+    } @else {
+      <ul class="plan-list">
+        @for (plan of currentPlans(); track plan.id) {
+          <li
+            class="plan-list__row"
+            [class.plan-list__row--active]="plan.id === currentSelectedPlanId()"
+            (click)="selectPlan(plan.id)"
+          >
+            <div class="plan-list__info">
+              <span class="plan-list__title">{{ plan.title }}</span>
+              <span class="plan-list__meta">
+                By {{ plan.coachName }} · Created {{ formatShortDate(plan.createdAt) }}
+              </span>
+            </div>
+            <mat-icon class="plan-list__chevron">chevron_right</mat-icon>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  @if (loadingDetail()) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else if (currentSelectedPlan(); as plan) {
+    <section class="plan-detail">
+      <span class="plan-detail__label">{{ plan.title }}</span>
+
+      <div class="pills">
+        @for (day of availableDays(); track day) {
+          <button
+            type="button"
+            class="pill"
+            [class.pill--active]="selectedDay() === day"
+            (click)="selectDay(day)"
+          >
+            {{ dayLabel(day) }}
+          </button>
+        }
+      </div>
+
+      <div class="card">
+        @if (activeTab() === 'nutrition') {
+          <ul class="item-list">
+            @for (item of nutritionDayItems(); track item.id) {
+              <li class="item-list__row">
+                <span class="item-list__name">{{ item.foodItemName }}</span>
+                <span class="item-list__meta">{{ item.quantityGrams }}g</span>
+              </li>
+            }
+          </ul>
+        } @else {
+          <ul class="item-list">
+            @for (item of workoutDayItems(); track item.id) {
+              <li class="item-list__row">
+                <span class="item-list__name">{{ item.exerciseName }}</span>
+                <span class="item-list__meta">{{ item.sets }} sets - {{ item.reps }} reps</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </section>
+  }
+</div>

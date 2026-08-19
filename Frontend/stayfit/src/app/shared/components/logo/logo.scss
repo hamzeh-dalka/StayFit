@@ -1,0 +1,44 @@
+:host {
+  display: inline-flex;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+
+  &__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: #1f3d2b;
+    transform: scale(1) rotate(0deg);
+  }
+
+  &__word {
+    color: #1f3d2b;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+}
+
+@keyframes logo-pop {
+  from {
+    transform: scale(0.6) rotate(-10deg);
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo__badge {
+    animation: logo-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+}

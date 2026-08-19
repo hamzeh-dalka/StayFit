@@ -117,5 +117,19 @@ namespace StayFit.Controllers
 
             return Ok(dto);
         }
+
+        [AllowAnonymous]
+        [HttpGet("public-stats")]
+        public async Task<IActionResult> GetPublicStats(CancellationToken ct)
+        {
+            var dto = new PublicStatsDto
+            {
+                TotalCoaches = await DbContext.CoachProfiles.CountAsync(ct),
+                TotalWorkoutLogs = await DbContext.WorkoutLogs.CountAsync(ct),
+                TotalMeals = await DbContext.Meals.CountAsync(ct)
+            };
+
+            return Ok(dto);
+        }
     }
 }

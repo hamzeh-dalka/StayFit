@@ -1,0 +1,51 @@
+<div class="profile-shell">
+  <div class="profile-card">
+    <a class="profile-card__back" routerLink="/dashboard/coach">
+      <span>&larr;</span> Back to dashboard
+    </a>
+
+    <h1 class="profile-card__title">Edit profile</h1>
+    <p class="profile-card__subtitle">Update your coaching details.</p>
+
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else {
+      <form class="profile-form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label for="specialty">Specialty</label>
+          <select id="specialty" formControlName="specialty">
+            @for (specialty of specialties; track specialty) {
+              <option [value]="specialty">{{ specialty }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="experienceYears">Years of experience</label>
+          <input id="experienceYears" type="number" formControlName="experienceYears" min="0" />
+          @if (form.controls.experienceYears.touched && form.controls.experienceYears.invalid) {
+            <span class="field__error">Enter valid years of experience.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="bio">Bio</label>
+          <textarea id="bio" formControlName="bio" placeholder="Tell clients about your coaching style…"></textarea>
+        </div>
+
+        @if (errorMessage) {
+          <p class="profile-form__error">{{ errorMessage }}</p>
+        }
+
+        <div class="profile-form__actions">
+          <a class="btn btn--outline" routerLink="/dashboard/coach">Cancel</a>
+          <button type="submit" class="btn btn--filled" [disabled]="submitting">
+            {{ submitting ? 'Saving…' : 'Save changes' }}
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

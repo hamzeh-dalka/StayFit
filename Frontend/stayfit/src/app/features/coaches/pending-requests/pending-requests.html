@@ -1,0 +1,37 @@
+<div class="pending-requests-page">
+  <header class="pending-requests-page__header">
+    <h1 class="pending-requests-page__title">Pending requests</h1>
+    <p class="pending-requests-page__subtitle">People who want to work with you.</p>
+  </header>
+
+  @if (loading) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else if (requests.length === 0) {
+    <div class="state state--empty">
+      <p>No pending requests right now.</p>
+    </div>
+  } @else {
+    <div class="card">
+      <ul class="request-list">
+        @for (request of requests; track request.id) {
+          <li class="request-list__row">
+            <div class="request-list__left">
+              <div class="request-list__avatar">{{ initials(request.name) }}</div>
+              <div class="request-list__info">
+                <span class="request-list__name">{{ request.name }}</span>
+                <span class="request-list__requested">Requested {{ formatShortDate(request.requestedAt) }}</span>
+              </div>
+            </div>
+
+            <div class="request-list__actions">
+              <button type="button" class="btn btn--filled" (click)="accept(request)">Accept</button>
+              <button type="button" class="btn btn--outline" (click)="decline(request)">Decline</button>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

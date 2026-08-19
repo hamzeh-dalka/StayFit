@@ -32,6 +32,7 @@ namespace StayFit.Controllers
                     Id = g.Id,
                     GoalType = g.GoalType,
                     TargetValue = g.TargetValue,
+                    CurrentValue = g.CurrentValue,
                     Deadline = g.Deadline
                 })
                 .ToListAsync(ct);
@@ -53,6 +54,7 @@ namespace StayFit.Controllers
                 ClientProfileId = clientProfile.Id,
                 GoalType = dto.GoalType,
                 TargetValue = dto.TargetValue,
+                CurrentValue = dto.CurrentValue,
                 Deadline = dto.Deadline
             };
 
@@ -64,6 +66,7 @@ namespace StayFit.Controllers
                 Id = goal.Id,
                 GoalType = goal.GoalType,
                 TargetValue = goal.TargetValue,
+                CurrentValue = goal.CurrentValue,
                 Deadline = goal.Deadline
             });
         }
@@ -91,6 +94,7 @@ namespace StayFit.Controllers
 
             goal.GoalType = dto.GoalType;
             goal.TargetValue = dto.TargetValue;
+            goal.CurrentValue = dto.CurrentValue;
             goal.Deadline = dto.Deadline;
 
             await DbContext.SaveChangesAsync(ct);
@@ -100,6 +104,7 @@ namespace StayFit.Controllers
                 Id = goal.Id,
                 GoalType = goal.GoalType,
                 TargetValue = goal.TargetValue,
+                CurrentValue = goal.CurrentValue,
                 Deadline = goal.Deadline
             });
         }

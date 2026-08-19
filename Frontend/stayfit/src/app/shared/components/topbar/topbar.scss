@@ -1,0 +1,256 @@
+:host {
+  display: block;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.topbar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 0.5px solid #e4e0d2;
+}
+
+.topbar__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f3d2b;
+}
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar__bell {
+  color: #5c6b5e;
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+}
+
+.notif-menu {
+  position: relative;
+}
+
+.notif-menu__trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.notif-menu__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #b34747;
+  color: #f5f3ec;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-menu__panel {
+  box-sizing: border-box;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 300px;
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 50;
+}
+
+.notif-menu__header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 0.5px solid #e4e0d2;
+}
+
+.notif-menu__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f3d2b;
+}
+
+.notif-menu__mark-all {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 11px;
+  font-family: inherit;
+  color: #5c6b5e;
+  cursor: pointer;
+}
+
+.notif-menu__empty {
+  margin: 0;
+  padding: 28px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #8a8674;
+}
+
+.notif-menu__list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notif-menu__item {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 0.5px solid #e4e0d2;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &--unread {
+    background: #faf8f2;
+  }
+}
+
+.notif-menu__dot {
+  flex-shrink: 0;
+  margin-top: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1f3d2b;
+
+  &--hidden {
+    background: transparent;
+  }
+}
+
+.notif-menu__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.notif-menu__message {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #5c6b5e;
+}
+
+.notif-menu__item--unread .notif-menu__message {
+  color: #1f3d2b;
+}
+
+.notif-menu__time {
+  font-size: 10.5px;
+  color: #8a8674;
+}
+
+.topbar__avatar {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #efebdd;
+  color: #1f3d2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.account-menu {
+  position: relative;
+}
+
+.account-menu__panel {
+  box-sizing: border-box;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 170px;
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 50;
+}
+
+.account-menu__item {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1f3d2b;
+  border: none;
+  border-bottom: 0.5px solid #e4e0d2;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &--danger {
+    color: #b34747;
+  }
+
+  .mat-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: inherit;
+  }
+}

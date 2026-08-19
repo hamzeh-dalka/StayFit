@@ -1,0 +1,11 @@
+// Shared container for wide, grid-based pages (e.g. coach directory, future dashboards).
+// The landing page is full-bleed by design and the auth pages use a narrower centered
+// card (see auth-card in login/register-*.scss) — neither is tied to these values.
+$container-max-width: 1080px;
+$container-padding: 40px;
+
+@mixin page-container {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: $container-padding;
+}

@@ -1,0 +1,54 @@
+<div class="profile-shell">
+  <div class="profile-card">
+    <a class="profile-card__back" routerLink="/dashboard/client">
+      <span>&larr;</span> Back to dashboard
+    </a>
+
+    <h1 class="profile-card__title">Edit profile</h1>
+    <p class="profile-card__subtitle">Update your personal details.</p>
+
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else {
+      <form class="profile-form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label for="heightCm">Height (cm)</label>
+          <input id="heightCm" type="number" formControlName="heightCm" min="1" />
+          @if (form.controls.heightCm.touched && form.controls.heightCm.invalid) {
+            <span class="field__error">Enter a valid height.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="dateOfBirth">Date of birth</label>
+          <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+          @if (form.controls.dateOfBirth.touched && form.controls.dateOfBirth.invalid) {
+            <span class="field__error">Date of birth is required.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender" formControlName="gender">
+            @for (gender of genders; track gender) {
+              <option [value]="gender">{{ gender }}</option>
+            }
+          </select>
+        </div>
+
+        @if (errorMessage) {
+          <p class="profile-form__error">{{ errorMessage }}</p>
+        }
+
+        <div class="profile-form__actions">
+          <a class="btn btn--outline" routerLink="/dashboard/client">Cancel</a>
+          <button type="submit" class="btn btn--filled" [disabled]="submitting">
+            {{ submitting ? 'Saving…' : 'Save changes' }}
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

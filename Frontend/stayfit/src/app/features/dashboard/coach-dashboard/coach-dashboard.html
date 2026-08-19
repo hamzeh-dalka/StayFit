@@ -1,0 +1,60 @@
+<div class="dashboard">
+  <header class="dashboard__header">
+    <h1 class="dashboard__title">Welcome back, {{ currentUser()?.name }}</h1>
+    <p class="dashboard__subtitle">Here's what's happening with your clients.</p>
+  </header>
+
+  <div class="stats-grid">
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else {
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">groups</mat-icon>
+        <span class="stat-card__value">{{ stats?.totalClients ?? 0 }}</span>
+        <span class="stat-card__label">Active clients</span>
+      </div>
+      <div class="stat-card">
+        @if ((stats?.pendingRequests ?? 0) > 0) {
+          <span class="stat-card__dot"></span>
+        }
+        <mat-icon class="stat-card__icon">person_add</mat-icon>
+        <span class="stat-card__value">{{ stats?.pendingRequests ?? 0 }}</span>
+        <span class="stat-card__label">Pending requests</span>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">restaurant_menu</mat-icon>
+        <span class="stat-card__value">{{ stats?.activeNutritionPlans ?? 0 }}</span>
+        <span class="stat-card__label">Nutrition plans</span>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">assignment</mat-icon>
+        <span class="stat-card__value">{{ stats?.activeWorkoutPlans ?? 0 }}</span>
+        <span class="stat-card__label">Workout plans</span>
+      </div>
+    }
+  </div>
+
+  @if (!loading && pendingRequests.length > 0) {
+    <div class="card">
+      <div class="card__header">
+        <h2 class="card__title">Pending requests</h2>
+        <a class="card__link" routerLink="/pending-requests">View all</a>
+      </div>
+
+      <ul class="request-list">
+        @for (request of visiblePendingRequests; track request.id) {
+          <li class="request-list__row">
+            <div class="request-list__avatar">{{ initials(request.name) }}</div>
+            <span class="request-list__name">{{ request.name }}</span>
+            <div class="request-list__actions">
+              <button type="button" class="btn btn--filled" (click)="accept(request)">Accept</button>
+              <button type="button" class="btn btn--outline" (click)="decline(request)">Decline</button>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

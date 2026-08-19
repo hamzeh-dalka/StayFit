@@ -1,0 +1,41 @@
+<h2 mat-dialog-title class="dialog-title">{{ isEdit ? 'Edit food item' : 'Add food item' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <div class="field">
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name" placeholder="e.g. Chicken breast" />
+    </div>
+
+    <div class="field">
+      <label for="caloriesPer100g">Calories (per 100g)</label>
+      <input id="caloriesPer100g" type="number" formControlName="caloriesPer100g" min="0" step="0.1" />
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="proteinPer100g">Protein (g)</label>
+        <input id="proteinPer100g" type="number" formControlName="proteinPer100g" min="0" step="0.1" />
+      </div>
+      <div class="field">
+        <label for="carbsPer100g">Carbs (g)</label>
+        <input id="carbsPer100g" type="number" formControlName="carbsPer100g" min="0" step="0.1" />
+      </div>
+      <div class="field">
+        <label for="fatPer100g">Fat (g)</label>
+        <input id="fatPer100g" type="number" formControlName="fatPer100g" min="0" step="0.1" />
+      </div>
+    </div>
+
+    @if (errorMessage) {
+      <p class="form-error">{{ errorMessage }}</p>
+    }
+  </div>
+
+  <div mat-dialog-actions>
+    <button type="button" class="btn btn--outline" (click)="cancel()">Cancel</button>
+    <button type="submit" class="btn btn--filled" [disabled]="submitting">
+      {{ submitting ? 'Saving…' : isEdit ? 'Save changes' : 'Add food item' }}
+    </button>
+  </div>
+</form>

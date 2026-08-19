@@ -1,0 +1,22 @@
+<button
+  type="button"
+  class="register-trigger"
+  [class.register-trigger--filled]="variant === 'filled'"
+  [class.register-trigger--outline]="variant === 'outline'"
+  [class.register-trigger--text]="variant === 'text'"
+  [matMenuTriggerFor]="registerMenu"
+  aria-haspopup="menu"
+>
+  <ng-content></ng-content>
+</button>
+
+<mat-menu #registerMenu="matMenu" xPosition="before" panelClass="register-menu-panel">
+  <button mat-menu-item routerLink="/auth/register-client">
+    <mat-icon>person</mat-icon>
+    <span>Register as client</span>
+  </button>
+  <button mat-menu-item routerLink="/auth/register-coach">
+    <mat-icon>fitness_center</mat-icon>
+    <span>Register as coach</span>
+  </button>
+</mat-menu>

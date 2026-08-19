@@ -1,0 +1,88 @@
+<div class="dashboard">
+  <header class="dashboard__header">
+    <h1 class="dashboard__title">Welcome back, {{ currentUser()?.name }}</h1>
+    <p class="dashboard__subtitle">Here's your progress at a glance.</p>
+  </header>
+
+  <div class="stats-grid">
+    @if (statsLoading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else {
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">local_fire_department</mat-icon>
+        <span class="stat-card__value">{{ stats?.todayCalories ?? 0 }}</span>
+        <span class="stat-card__label">Calories today</span>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">monitor_weight</mat-icon>
+        <span class="stat-card__value">{{ latestWeightLabel }}</span>
+        <span class="stat-card__label">Latest weight</span>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">track_changes</mat-icon>
+        <span class="stat-card__value">{{ stats?.activeGoalsCount ?? 0 }}</span>
+        <span class="stat-card__label">Active goals</span>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">fitness_center</mat-icon>
+        <span class="stat-card__value">{{ stats?.workoutsThisWeek ?? 0 }}</span>
+        <span class="stat-card__label">Workouts this week</span>
+      </div>
+    }
+  </div>
+
+  <div class="secondary-grid">
+    <div class="card">
+      <div class="card__header">
+        <h2 class="card__title">Recent meals</h2>
+        <a class="card__link" routerLink="/meals">View all</a>
+      </div>
+
+      @if (mealsLoading) {
+        <div class="state">
+          <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+        </div>
+      } @else if (meals.length === 0) {
+        <p class="card__empty">No meals logged yet.</p>
+      } @else {
+        <ul class="meal-list">
+          @for (meal of meals; track meal.id) {
+            <li class="meal-list__row">
+              <span class="meal-list__type">{{ meal.mealType }}</span>
+              <span class="meal-list__date">{{ formatRelativeDate(meal.loggedAt) }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <div class="card">
+      <div class="card__header">
+        <h2 class="card__title">Weight trend</h2>
+        <a class="card__link" routerLink="/weight-logs">View all</a>
+      </div>
+
+      @if (weightLoading) {
+        <div class="state">
+          <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+        </div>
+      } @else if (chart; as c) {
+        <svg class="weight-chart" viewBox="0 0 240 60" preserveAspectRatio="none">
+          <polyline
+            [attr.points]="c.polyline"
+            fill="none"
+            stroke="#1F3D2B"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle [attr.cx]="c.last.x" [attr.cy]="c.last.y" r="3" fill="#1F3D2B" />
+        </svg>
+      } @else {
+        <p class="card__empty">Log more weight entries to see your trend.</p>
+      }
+    </div>
+  </div>
+</div>

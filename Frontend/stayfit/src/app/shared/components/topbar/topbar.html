@@ -1,0 +1,90 @@
+<header class="topbar">
+  <span class="topbar__title">{{ pageTitle() }}</span>
+
+  <div class="topbar__actions">
+    <div class="notif-menu">
+      <button
+        type="button"
+        class="notif-menu__trigger"
+        (click)="toggleNotifications()"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="isNotifOpen()"
+        aria-label="Notifications"
+      >
+        <mat-icon class="topbar__bell">notifications</mat-icon>
+        @if (unreadCount() > 0) {
+          <span class="notif-menu__badge">{{ unreadCount() }}</span>
+        }
+      </button>
+
+      @if (isNotifOpen()) {
+        <div class="notif-menu__panel" role="menu">
+          <div class="notif-menu__header">
+            <span class="notif-menu__title">Notifications</span>
+            @if (unreadCount() > 0) {
+              <button type="button" class="notif-menu__mark-all" (click)="markAllAsRead()">
+                Mark all as read
+              </button>
+            }
+          </div>
+
+          @if (notifications().length === 0) {
+            <p class="notif-menu__empty">No notifications yet.</p>
+          } @else {
+            <div class="notif-menu__list">
+              @for (n of notifications(); track n.id) {
+                <button
+                  type="button"
+                  class="notif-menu__item"
+                  [class.notif-menu__item--unread]="!n.isRead"
+                  (click)="markAsRead(n)"
+                  role="menuitem"
+                >
+                  <span class="notif-menu__dot" [class.notif-menu__dot--hidden]="n.isRead"></span>
+                  <span class="notif-menu__content">
+                    <span class="notif-menu__message">{{ n.message }}</span>
+                    <span class="notif-menu__time">{{ formatRelativeDate(n.createdAt) }}</span>
+                  </span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="account-menu">
+      <button
+        type="button"
+        class="topbar__avatar"
+        (click)="toggleMenu()"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="isOpen()"
+        aria-label="Account menu"
+      >
+        {{ initials(currentUser()?.name ?? '') }}
+      </button>
+
+      @if (isOpen()) {
+        <div class="account-menu__panel" role="menu">
+          @if (editProfilePath(); as path) {
+            <a class="account-menu__item" [routerLink]="path" (click)="closeMenu()" role="menuitem">
+              <mat-icon>edit</mat-icon>
+              <span>Edit profile</span>
+            </a>
+          }
+
+          <button
+            type="button"
+            class="account-menu__item account-menu__item--danger"
+            (click)="logout()"
+            role="menuitem"
+          >
+            <mat-icon>logout</mat-icon>
+            <span>Log out</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

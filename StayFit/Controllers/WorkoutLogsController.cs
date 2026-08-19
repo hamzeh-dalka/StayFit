@@ -224,5 +224,41 @@ namespace StayFit.Controllers
 
             return Ok();
         }
+
+        [Authorize(Roles = "Client")]
+        [HttpDelete("{id}/items/{itemId}")]
+        public async Task<IActionResult> DeleteWorkoutLogItem(long id, long itemId, CancellationToken ct)
+        {
+            var clientProfile = await GetCurrentClientProfileAsync(ct);
+            if (clientProfile == null)
+            {
+                return NotFound("Client profile not found.");
+            }
+
+            var workoutLog = await DbContext.WorkoutLogs.FirstOrDefaultAsync(w => w.Id == id, ct);
+
+            if (workoutLog == null)
+            {
+                return NotFound("Workout log not found.");
+            }
+
+            if (workoutLog.ClientProfileId != clientProfile.Id)
+            {
+                return Forbid();
+            }
+
+            var workoutLogItem = await DbContext.WorkoutLogItems
+                .FirstOrDefaultAsync(wli => wli.Id == itemId && wli.WorkoutLogId == id, ct);
+
+            if (workoutLogItem == null)
+            {
+                return NotFound("Workout log item not found.");
+            }
+
+            DbContext.WorkoutLogItems.Remove(workoutLogItem);
+            await DbContext.SaveChangesAsync(ct);
+
+            return Ok();
+        }
     }
 }

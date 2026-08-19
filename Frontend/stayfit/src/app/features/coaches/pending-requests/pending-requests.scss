@@ -1,0 +1,148 @@
+:host {
+  display: block;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.pending-requests-page {
+  padding: 40px;
+
+  &__header {
+    margin-bottom: 28px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f3d2b;
+    margin: 0 0 4px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: #5c6b5e;
+    margin: 0;
+  }
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 0;
+
+  &--empty p {
+    font-size: 13px;
+    color: #5c6b5e;
+    margin: 0;
+  }
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: #1f3d2b;
+  }
+}
+
+.card {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 0.5px solid #e4e0d2;
+  border-radius: 10px;
+}
+
+.request-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 0.5px solid #e4e0d2;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #efebdd;
+    color: #1f3d2b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &__info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1f3d2b;
+  }
+
+  &__requested {
+    font-size: 11px;
+    color: #8a8674;
+  }
+
+  &__actions {
+    flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  font-family: inherit;
+
+  &--filled {
+    background: #1f3d2b;
+    color: #f5f3ec;
+  }
+
+  &--outline {
+    background: transparent;
+    color: #1f3d2b;
+    border: 1px solid #c9c4b0;
+  }
+}

@@ -1,0 +1,56 @@
+<div class="dashboard">
+  <header class="dashboard__header">
+    <h1 class="dashboard__title">System overview</h1>
+    <p class="dashboard__subtitle">Platform-wide stats and activity.</p>
+  </header>
+
+  @if (loading) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else {
+    <h2 class="section-label">Platform</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-card__value">{{ adminStats?.totalUsers ?? 0 }}</span>
+        <span class="stat-card__label">Total users</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__value">{{ adminStats?.totalCoaches ?? 0 }}</span>
+        <span class="stat-card__label">Coaches</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__value">{{ adminStats?.totalClients ?? 0 }}</span>
+        <span class="stat-card__label">Clients</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__value">{{ adminStats?.totalFoodItems ?? 0 }}</span>
+        <span class="stat-card__label">Food items</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__value">{{ adminStats?.totalExercises ?? 0 }}</span>
+        <span class="stat-card__label">Exercises</span>
+      </div>
+    </div>
+
+    <h2 class="section-label">Activity</h2>
+    <div class="stats-grid stats-grid--secondary">
+      <div class="stat-card">
+        <span class="stat-card__value">{{ systemStats?.pendingCoachClientRequests ?? 0 }}</span>
+        <span class="stat-card__label">Pending requests</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__value">{{ systemStats?.totalNutritionPlans ?? 0 }}</span>
+        <span class="stat-card__label">Nutrition plans</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__value">{{ systemStats?.totalWorkoutPlans ?? 0 }}</span>
+        <span class="stat-card__label">Workout plans</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__value">{{ systemStats?.totalMessages ?? 0 }}</span>
+        <span class="stat-card__label">Messages sent</span>
+      </div>
+    </div>
+  }
+</div>

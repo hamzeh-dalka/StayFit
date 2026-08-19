@@ -1,0 +1,52 @@
+<h2 mat-dialog-title class="dialog-title">Add food item</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <div class="field">
+      <label for="foodItem">Food item</label>
+      <input
+        id="foodItem"
+        type="text"
+        formControlName="foodItem"
+        [matAutocomplete]="auto"
+        placeholder="Search food items…"
+        autocomplete="off"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        class="app-autocomplete-panel"
+        [displayWith]="displayFoodItem"
+        (optionSelected)="onOptionSelected($event)"
+      >
+        @if (searching) {
+          <mat-option disabled>Searching…</mat-option>
+        } @else if (hasQuery && searchResults.length === 0) {
+          <mat-option disabled>No matches found</mat-option>
+        } @else {
+          @for (item of searchResults; track item.id) {
+            <mat-option [value]="item">
+              {{ item.name }}
+              <span class="option-meta">— {{ item.caloriesPer100g }} kcal/100g</span>
+            </mat-option>
+          }
+        }
+      </mat-autocomplete>
+    </div>
+
+    <div class="field">
+      <label for="quantityInGrams">Quantity (grams)</label>
+      <input id="quantityInGrams" type="number" formControlName="quantityInGrams" min="1" />
+    </div>
+
+    @if (errorMessage) {
+      <p class="form-error">{{ errorMessage }}</p>
+    }
+  </div>
+
+  <div mat-dialog-actions>
+    <button type="button" class="btn btn--outline" (click)="cancel()">Cancel</button>
+    <button type="submit" class="btn btn--filled" [disabled]="submitting">
+      {{ submitting ? 'Adding…' : 'Add item' }}
+    </button>
+  </div>
+</form>

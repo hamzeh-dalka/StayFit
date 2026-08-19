@@ -1,0 +1,37 @@
+<div class="pending-coaches-page">
+  <header class="pending-coaches-page__header">
+    <h1 class="pending-coaches-page__title">Pending coaches</h1>
+    <p class="pending-coaches-page__subtitle">Review and approve new coach registrations.</p>
+  </header>
+
+  @if (loading) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else if (coaches.length === 0) {
+    <div class="state state--empty">
+      <p>No pending coach registrations.</p>
+    </div>
+  } @else {
+    <div class="card">
+      <ul class="coach-list">
+        @for (coach of coaches; track coach.id) {
+          <li class="coach-list__row">
+            <div class="coach-list__left">
+              <div class="coach-list__avatar">{{ initials(coach.name) }}</div>
+              <div class="coach-list__info">
+                <span class="coach-list__name">{{ coach.name }}</span>
+                <span class="coach-list__email">{{ coach.email }}</span>
+              </div>
+            </div>
+
+            <div class="coach-list__actions">
+              <button type="button" class="btn btn--filled" (click)="approve(coach)">Approve</button>
+              <button type="button" class="btn btn--outline" (click)="confirmReject(coach)">Reject</button>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

@@ -1,0 +1,92 @@
+:host {
+  display: block;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.dialog-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f3d2b;
+}
+
+.btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  font-family: inherit;
+
+  &--filled {
+    background: #1f3d2b;
+    color: #f5f3ec;
+    border: 1px solid #1f3d2b;
+  }
+
+  &--outline {
+    background: transparent;
+    color: #1f3d2b;
+    border: 1px solid #c9c4b0;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1f3d2b;
+  }
+
+  input,
+  select {
+    box-sizing: border-box;
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1f3d2b;
+    background: #f5f3ec;
+    border: 1px solid #e4e0d2;
+    border-radius: 6px;
+    padding: 10px 12px;
+    outline: none;
+
+    &:focus {
+      border-color: #1f3d2b;
+    }
+  }
+}
+
+.form-error {
+  font-size: 13px;
+  color: #b34747;
+  margin: 0 0 8px;
+}
+
+[mat-dialog-actions] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

@@ -72,7 +72,7 @@ namespace StayFit.Controllers
             return Ok(exercise);
         }
 
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateExercise([FromBody] SaveExerciseDto dto, CancellationToken ct)
         {
@@ -95,7 +95,7 @@ namespace StayFit.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateExercise(long id, [FromBody] SaveExerciseDto dto, CancellationToken ct)
         {
@@ -121,7 +121,7 @@ namespace StayFit.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExercise(long id, CancellationToken ct)
         {

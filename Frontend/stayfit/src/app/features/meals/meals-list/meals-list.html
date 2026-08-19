@@ -1,0 +1,37 @@
+<div class="meals-page">
+  <header class="meals-page__header">
+    <div>
+      <h1 class="meals-page__title">Meals</h1>
+      <p class="meals-page__subtitle">Track what you eat, day by day.</p>
+    </div>
+    <button type="button" class="btn btn--filled" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Log a meal
+    </button>
+  </header>
+
+  <div class="card">
+    @if (loading) {
+      <div class="state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+      </div>
+    } @else if (meals.length === 0) {
+      <p class="card__empty">No meals logged yet.</p>
+    } @else {
+      <ul class="meal-list">
+        @for (meal of meals; track meal.id) {
+          <li class="meal-list__row" (click)="openRow(meal)">
+            <div class="meal-list__icon">
+              <mat-icon>{{ mealIcon(meal.mealType) }}</mat-icon>
+            </div>
+            <div class="meal-list__info">
+              <span class="meal-list__type">{{ meal.mealType }}</span>
+              <span class="meal-list__date">{{ formatRelativeDate(meal.loggedAt) }}</span>
+            </div>
+            <mat-icon class="meal-list__chevron">chevron_right</mat-icon>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

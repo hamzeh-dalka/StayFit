@@ -1,0 +1,110 @@
+<div class="auth-shell">
+  <svg
+    class="auth-shell__bg"
+    width="100%"
+    height="100%"
+    viewBox="0 0 680 380"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+  >
+    <line x1="-40" y1="0" x2="-160" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.06" />
+    <line x1="60" y1="0" x2="-60" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.07" />
+    <line x1="160" y1="0" x2="40" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.07" />
+    <line x1="260" y1="0" x2="140" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.08" />
+    <line x1="360" y1="0" x2="240" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.08" />
+    <line x1="460" y1="0" x2="340" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.09" />
+    <line x1="560" y1="0" x2="440" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.09" />
+    <line x1="660" y1="0" x2="540" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.09" />
+    <line x1="760" y1="0" x2="640" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.08" />
+    <line x1="860" y1="0" x2="740" y2="380" stroke="#1F3D2B" stroke-width="1" opacity="0.07" />
+
+    <circle cx="80" cy="330" r="90" fill="#1F3D2B" opacity="0.05" />
+    <circle cx="600" cy="50" r="110" fill="#1F3D2B" opacity="0.06" />
+    <circle cx="600" cy="50" r="65" fill="none" stroke="#1F3D2B" stroke-width="1" opacity="0.15" />
+    <circle cx="340" cy="200" r="130" fill="none" stroke="#1F3D2B" stroke-width="1" opacity="0.05" />
+
+    <g fill="#1F3D2B" opacity="0.13">
+      <circle cx="40" cy="50" r="2.5" /><circle cx="70" cy="50" r="2.5" /><circle cx="100" cy="50" r="2.5" /><circle cx="130" cy="50" r="2.5" />
+      <circle cx="40" cy="75" r="2.5" /><circle cx="70" cy="75" r="2.5" /><circle cx="100" cy="75" r="2.5" /><circle cx="130" cy="75" r="2.5" />
+      <circle cx="40" cy="100" r="2.5" /><circle cx="70" cy="100" r="2.5" /><circle cx="100" cy="100" r="2.5" /><circle cx="130" cy="100" r="2.5" />
+
+      <circle cx="540" cy="300" r="2.5" /><circle cx="570" cy="300" r="2.5" /><circle cx="600" cy="300" r="2.5" /><circle cx="630" cy="300" r="2.5" />
+      <circle cx="540" cy="325" r="2.5" /><circle cx="570" cy="325" r="2.5" /><circle cx="600" cy="325" r="2.5" /><circle cx="630" cy="325" r="2.5" />
+      <circle cx="540" cy="350" r="2.5" /><circle cx="570" cy="350" r="2.5" /><circle cx="600" cy="350" r="2.5" /><circle cx="630" cy="350" r="2.5" />
+
+      <circle cx="280" cy="330" r="2" /><circle cx="305" cy="330" r="2" /><circle cx="330" cy="330" r="2" />
+    </g>
+  </svg>
+
+  <div class="auth-shell__content">
+    <a class="auth-shell__brand" routerLink="/">StayFit</a>
+
+    <div class="auth-card">
+      <h1 class="auth-card__title">Create your coach account</h1>
+      <p class="auth-card__subtitle">Set up your profile and start guiding clients.</p>
+
+      <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" type="text" formControlName="name" placeholder="Jane Doe" autocomplete="name" />
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <span class="field__error">Name is required.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" placeholder="you@example.com" autocomplete="email" />
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <span class="field__error">Enter a valid email address.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" formControlName="password" placeholder="At least 6 characters" autocomplete="new-password" />
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <span class="field__error">Password must be at least 6 characters.</span>
+          }
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="specialty">Specialty</label>
+            <select id="specialty" formControlName="specialty">
+              @for (specialty of specialties; track specialty) {
+                <option [value]="specialty">{{ specialty }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="experienceYears">Years of experience</label>
+            <input id="experienceYears" type="number" formControlName="experienceYears" placeholder="3" min="0" />
+            @if (form.controls.experienceYears.touched && form.controls.experienceYears.invalid) {
+              <span class="field__error">Enter valid years of experience.</span>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="bio">Bio <span class="field__hint">(optional)</span></label>
+          <textarea id="bio" formControlName="bio" placeholder="Tell clients about your coaching style…"></textarea>
+        </div>
+
+        @if (errorMessage) {
+          <p class="auth-form__error">{{ errorMessage }}</p>
+        }
+
+        <button type="submit" class="btn btn--filled auth-form__submit" [disabled]="submitting">
+          {{ submitting ? 'Creating account…' : 'Create account' }}
+        </button>
+      </form>
+
+      <p class="auth-card__footer">
+        Already have an account?
+        <a class="auth-card__link" routerLink="/auth/login">Log in</a>
+      </p>
+    </div>
+  </div>
+</div>

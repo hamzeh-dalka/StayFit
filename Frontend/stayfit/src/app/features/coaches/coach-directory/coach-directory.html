@@ -1,0 +1,20 @@
+<div class="coaches-page">
+  <header class="header">
+    <div class="header__inner">
+      <app-logo></app-logo>
+      <nav class="header__nav">
+        <a class="link" routerLink="/auth/login">Log in</a>
+        <app-register-menu variant="filled">Register</app-register-menu>
+      </nav>
+    </div>
+  </header>
+
+  <main class="coaches-main">
+    <div class="coaches-heading">
+      <h1 class="coaches-heading__title">Find your coach</h1>
+      <p class="coaches-heading__subtitle">Browse coaches by specialty and start your journey.</p>
+    </div>
+
+    <app-coach-browse-list></app-coach-browse-list>
+  </main>
+</div>

@@ -1,0 +1,87 @@
+<div class="messages-page">
+  <aside class="conversation-list">
+    <div class="conversation-list__header">Messages</div>
+
+    <div class="conversation-list__body">
+      @if (loadingContacts()) {
+        <div class="state">
+          <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+        </div>
+      } @else if (contacts().length === 0) {
+        <div class="empty-state">
+          <p class="empty-state__title">No conversations yet.</p>
+          @if (browsePath()) {
+            <p class="empty-state__hint">
+              Visit <a [routerLink]="browsePath()">Browse coaches</a> to connect with someone first.
+            </p>
+          } @else {
+            <p class="empty-state__hint">Accept a client's request to start a conversation.</p>
+          }
+        </div>
+      } @else {
+        @for (contact of contacts(); track contact.userId) {
+          <button
+            type="button"
+            class="conversation-row"
+            [class.conversation-row--active]="contact.userId === selectedUserId()"
+            (click)="selectContact(contact.userId)"
+          >
+            <div class="conversation-row__avatar">{{ initials(contact.name) }}</div>
+            <div class="conversation-row__info">
+              <span class="conversation-row__name">{{ contact.name }}</span>
+              @if (contact.lastMessage) {
+                <span class="conversation-row__preview">{{ contact.lastMessage }}</span>
+              }
+            </div>
+          </button>
+        }
+      }
+    </div>
+  </aside>
+
+  <section class="thread">
+    @if (selectedUserId() === null) {
+      <div class="thread__placeholder">Select a conversation to start chatting.</div>
+    } @else {
+      <div class="thread__header">
+        <div class="thread__avatar">{{ initials(selectedContact()?.name ?? '') }}</div>
+        <span class="thread__name">{{ selectedContact()?.name }}</span>
+      </div>
+
+      <div class="thread__messages" #messageList>
+        @if (loadingThread()) {
+          <div class="state">
+            <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+          </div>
+        } @else {
+          @for (message of messages(); track message.id) {
+            <div class="bubble-row" [class.bubble-row--mine]="isMine(message)">
+              <div class="bubble" [class.bubble--mine]="isMine(message)">{{ message.content }}</div>
+              <span class="bubble__time">{{ formatBubbleTime(message.sentAt) }}</span>
+            </div>
+          }
+        }
+      </div>
+
+      <div class="thread__input-row">
+        <input
+          class="thread__input"
+          type="text"
+          placeholder="Type a message..."
+          [ngModel]="draft()"
+          (ngModelChange)="draft.set($event)"
+          (keydown)="onInputKeydown($event)"
+        />
+        <button
+          type="button"
+          class="thread__send"
+          [disabled]="!draft().trim() || sending()"
+          (click)="sendMessage()"
+          aria-label="Send message"
+        >
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    }
+  </section>
+</div>

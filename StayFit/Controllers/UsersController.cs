@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StayFit.DTOs.Users;
+using StayFit.Enums;
 
 namespace StayFit.Controllers
 {
@@ -39,7 +40,8 @@ namespace StayFit.Controllers
                     Id = x.Id,
                     Name = x.Name,
                     Email = x.Email,
-                    Role = x.Role
+                    Role = x.Role,
+                    IsApproved = x.IsApproved
                 }).ToListAsync(ct);
 
             return Ok(users);
@@ -62,7 +64,8 @@ namespace StayFit.Controllers
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
+                IsApproved = user.IsApproved
             });
         }
 
@@ -88,7 +91,8 @@ namespace StayFit.Controllers
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
+                IsApproved = user.IsApproved
             });
         }
 
@@ -122,6 +126,46 @@ namespace StayFit.Controllers
             {
                 return BadRequest("Cannot delete user with related data.");
             }
+
+            DbContext.Users.Remove(user);
+            await DbContext.SaveChangesAsync(ct);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("pending-coaches")]
+        public async Task<IActionResult> GetPendingCoaches(CancellationToken ct)
+        {
+            var pending = await DbContext.Users
+                .Where(u => u.Role == Role.Coach && !u.IsApproved)
+                .Select(u => new UserDto { Id = u.Id, Name = u.Name, Email = u.Email, Role = u.Role , IsApproved = u.IsApproved})
+                .ToListAsync(ct);
+
+            return Ok(pending);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/approve")]
+        public async Task<IActionResult> ApproveCoach(long id, CancellationToken ct)
+        {
+            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.Id == id && u.Role == Role.Coach, ct);
+
+            if (user == null) return NotFound();
+
+            user.IsApproved = true;
+            await DbContext.SaveChangesAsync(ct);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}/reject")]
+        public async Task<IActionResult> RejectCoach(long id, CancellationToken ct)
+        {
+            var user = await DbContext.Users.FirstOrDefaultAsync(u => u.Id == id && u.Role == Role.Coach && !u.IsApproved, ct);
+
+            if (user == null) return NotFound();
 
             DbContext.Users.Remove(user);
             await DbContext.SaveChangesAsync(ct);

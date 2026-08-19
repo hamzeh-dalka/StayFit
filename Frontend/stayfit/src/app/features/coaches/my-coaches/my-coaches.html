@@ -1,0 +1,64 @@
+<div class="my-coaches-page">
+  <header class="my-coaches-page__header">
+    <div>
+      <h1 class="my-coaches-page__title">My coaches</h1>
+      <p class="my-coaches-page__subtitle">Your coaches and pending requests.</p>
+    </div>
+    <a class="btn btn--outline" routerLink="/coaches-browse">Browse coaches</a>
+  </header>
+
+  @if (loading) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+    </div>
+  } @else if (coaches.length === 0) {
+    <div class="state state--empty">
+      <p>You don't have any coaches yet.</p>
+      <a class="btn btn--filled" routerLink="/coaches-browse">Browse coaches</a>
+    </div>
+  } @else {
+    @if (activeCoaches.length > 0) {
+      <section class="section">
+        <span class="section__label">Active</span>
+        <div class="card">
+          <ul class="coach-list">
+            @for (coach of activeCoaches; track coach.id) {
+              <li class="coach-list__row">
+                <div class="coach-list__avatar">{{ initials(coach.name) }}</div>
+                <div class="coach-list__info">
+                  <span class="coach-list__name">{{ coach.name }}</span>
+                  <span class="coach-list__since">Since {{ formatShortDate(coach.requestedAt) }}</span>
+                </div>
+                <a class="btn btn--outline coach-list__message" [routerLink]="['/messages', coach.userId]">
+                  <mat-icon>chat</mat-icon>
+                  Message
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </section>
+    }
+
+    @if (pendingCoaches.length > 0) {
+      <section class="section">
+        <span class="section__label">Pending</span>
+        <div class="card">
+          <ul class="coach-list">
+            @for (coach of pendingCoaches; track coach.id) {
+              <li class="coach-list__row">
+                <div class="coach-list__avatar">{{ initials(coach.name) }}</div>
+                <div class="coach-list__info">
+                  <span class="coach-list__name">{{ coach.name }}</span>
+                  <span class="coach-list__since">Since {{ formatShortDate(coach.requestedAt) }}</span>
+                </div>
+                <span class="badge">Awaiting response</span>
+                <button type="button" class="cancel-link" (click)="cancelRequest(coach)">Cancel request</button>
+              </li>
+            }
+          </ul>
+        </div>
+      </section>
+    }
+  }
+</div>

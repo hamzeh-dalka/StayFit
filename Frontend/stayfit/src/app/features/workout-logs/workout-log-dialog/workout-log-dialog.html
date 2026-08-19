@@ -1,0 +1,32 @@
+<h2 mat-dialog-title class="dialog-title">{{ isEdit ? 'Edit workout' : 'Log a workout' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <div class="field-row">
+      <div class="field">
+        <label for="date">Date</label>
+        <input id="date" type="date" formControlName="date" />
+      </div>
+      <div class="field">
+        <label for="time">Time</label>
+        <input id="time" type="time" formControlName="time" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="durationMinutes">Duration (minutes)</label>
+      <input id="durationMinutes" type="number" formControlName="durationMinutes" min="1" />
+    </div>
+
+    @if (errorMessage) {
+      <p class="form-error">{{ errorMessage }}</p>
+    }
+  </div>
+
+  <div mat-dialog-actions>
+    <button type="button" class="btn btn--outline" (click)="cancel()">Cancel</button>
+    <button type="submit" class="btn btn--filled" [disabled]="submitting">
+      {{ submitting ? 'Saving…' : isEdit ? 'Save changes' : 'Log workout' }}
+    </button>
+  </div>
+</form>
